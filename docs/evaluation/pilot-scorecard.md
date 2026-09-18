@@ -134,9 +134,7 @@ Review the dimensions separately.
 
 ## Record format
 
-Use:
-
-`.pact/schema/pilot-evaluation.schema.json`
+The canonical editable Pilot Evaluation schema lives in the PACT source repository at `.pact/schema/pilot-evaluation.schema.json`. Adopted compact runtimes embed the protocol and validate records through `pact eval`.
 
 Example:
 

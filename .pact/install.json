@@ -155,8 +155,8 @@
     "docs/evaluation/pilot-scorecard.md": {
       "management": "framework",
       "source_path": "docs/evaluation/pilot-scorecard.md",
-      "source_sha256": "231360180dbd842e9fe96528d38e5d93e0a53b31fbb12c8442875bc1755970b1",
-      "installed_sha256": "231360180dbd842e9fe96528d38e5d93e0a53b31fbb12c8442875bc1755970b1"
+      "source_sha256": "3bb0ca2056a97702bbbc4ecd349fcf0b2c9f2d413334a40157fb6b403bb70949",
+      "installed_sha256": "3bb0ca2056a97702bbbc4ecd349fcf0b2c9f2d413334a40157fb6b403bb70949"
     },
     ".agents/decisions/README.md": {
       "management": "framework",
@@ -224,101 +224,17 @@
       "source_sha256": "da9789e4b49acd72217a4a886f4bb56a45e409c56f27ca1dd061d5a7f5ec33b5",
       "installed_sha256": "da9789e4b49acd72217a4a886f4bb56a45e409c56f27ca1dd061d5a7f5ec33b5"
     },
-    ".pact/schema/artifact.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/artifact.schema.json",
-      "source_sha256": "1722b89d87ea13a466ff23a040ef320fe79deddb39e31daa316d8cdbf604d4c2",
-      "installed_sha256": "1722b89d87ea13a466ff23a040ef320fe79deddb39e31daa316d8cdbf604d4c2"
-    },
-    ".pact/schema/baseline.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/baseline.schema.json",
-      "source_sha256": "1537d43870ccdf3f6693ca42ad746fe6fb2aee6750afba008e03c609d3d51e69",
-      "installed_sha256": "1537d43870ccdf3f6693ca42ad746fe6fb2aee6750afba008e03c609d3d51e69"
-    },
-    ".pact/schema/code-map.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/code-map.schema.json",
-      "source_sha256": "4adf5ad6c370d3fae1a2199dd86f23c0bf0f799136be8f943912673cf110e566",
-      "installed_sha256": "4adf5ad6c370d3fae1a2199dd86f23c0bf0f799136be8f943912673cf110e566"
-    },
-    ".pact/schema/config.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/config.schema.json",
-      "source_sha256": "c05ac134411afbf312e0c26a917ba1d35919f1a7372dc4c6528e1ed86137725b",
-      "installed_sha256": "c05ac134411afbf312e0c26a917ba1d35919f1a7372dc4c6528e1ed86137725b"
-    },
-    ".pact/schema/context-envelope.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/context-envelope.schema.json",
-      "source_sha256": "2397ff485c0030fcebd4fa1560ad62074df6b2187f236c07fad57bd4eb7c83b4",
-      "installed_sha256": "2397ff485c0030fcebd4fa1560ad62074df6b2187f236c07fad57bd4eb7c83b4"
-    },
     ".pact/schema/convergence-report.schema.json": {
-      "management": "framework",
+      "management": "seed",
       "source_path": ".pact/schema/convergence-report.schema.json",
       "source_sha256": "a84cfbf04411be3bad1a00ae9a02c71dc02606b278aea58ca0d536b7af76eb67",
       "installed_sha256": "a84cfbf04411be3bad1a00ae9a02c71dc02606b278aea58ca0d536b7af76eb67"
     },
-    ".pact/schema/evidence-receipt.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/evidence-receipt.schema.json",
-      "source_sha256": "9d48ee2b1691296350a4798fa8341641c27aca5d0d80c72db0839f5825c926f4",
-      "installed_sha256": "9d48ee2b1691296350a4798fa8341641c27aca5d0d80c72db0839f5825c926f4"
-    },
-    ".pact/schema/explanation-packet.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/explanation-packet.schema.json",
-      "source_sha256": "2ff400389aec6df3fa372477cdfb12e0b96c848ce0e7015aad0ce1703fd2fc02",
-      "installed_sha256": "2ff400389aec6df3fa372477cdfb12e0b96c848ce0e7015aad0ce1703fd2fc02"
-    },
-    ".pact/schema/fitness.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/fitness.schema.json",
-      "source_sha256": "9531cd35ff4afb3203658e8f80fbdf3e1889ff4223ac52d50601e6ea4a8d5a24",
-      "installed_sha256": "9531cd35ff4afb3203658e8f80fbdf3e1889ff4223ac52d50601e6ea4a8d5a24"
-    },
-    ".pact/schema/impact-report.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/impact-report.schema.json",
-      "source_sha256": "f149f2dcce6c7d84e8d3b5e925e8f5d8707b59299360367a0135625fe8a653a3",
-      "installed_sha256": "f149f2dcce6c7d84e8d3b5e925e8f5d8707b59299360367a0135625fe8a653a3"
-    },
-    ".pact/schema/install-manifest.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/install-manifest.schema.json",
-      "source_sha256": "18588d92d0cbe2761d2ee42fc57dc3a9d1c92d8b080fdf471d001005d7738a00",
-      "installed_sha256": "18588d92d0cbe2761d2ee42fc57dc3a9d1c92d8b080fdf471d001005d7738a00"
-    },
     ".pact/schema/owner-report.schema.json": {
-      "management": "framework",
+      "management": "seed",
       "source_path": ".pact/schema/owner-report.schema.json",
       "source_sha256": "61b86cac8d4676f021c6186c30498daa2bd0009a06ba7d7a79a6a5ea96f06480",
       "installed_sha256": "61b86cac8d4676f021c6186c30498daa2bd0009a06ba7d7a79a6a5ea96f06480"
-    },
-    ".pact/schema/pilot-evaluation.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/pilot-evaluation.schema.json",
-      "source_sha256": "c8e8091bfa1194fedaaa3a3dc3dc83a9360e10b9420f58337517355da7af51bc",
-      "installed_sha256": "c8e8091bfa1194fedaaa3a3dc3dc83a9360e10b9420f58337517355da7af51bc"
-    },
-    ".pact/schema/run-receipt.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/run-receipt.schema.json",
-      "source_sha256": "d781be40cc4eaf493f3bdcabb5dacdc1b3feb365f91b4acf6574f32cd52c5752",
-      "installed_sha256": "d781be40cc4eaf493f3bdcabb5dacdc1b3feb365f91b4acf6574f32cd52c5752"
-    },
-    ".pact/schema/task-contract.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/task-contract.schema.json",
-      "source_sha256": "4ac10de0673c50b1ff27104fe595acf0845007e3423df6b58f731f0beea0952d",
-      "installed_sha256": "4ac10de0673c50b1ff27104fe595acf0845007e3423df6b58f731f0beea0952d"
-    },
-    ".pact/schema/task-observation.schema.json": {
-      "management": "framework",
-      "source_path": ".pact/schema/task-observation.schema.json",
-      "source_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7",
-      "installed_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7"
     },
     "scripts/pact/pact.py": {
       "management": "framework",
@@ -359,8 +275,20 @@
     ".pact/pact.pyz": {
       "management": "framework",
       "source_path": ".pact/pact.pyz",
-      "source_sha256": "040dfcaae3b7057087c2d0dac568135114822bea4db2ac86d2b9f248ed48ef12",
-      "installed_sha256": "040dfcaae3b7057087c2d0dac568135114822bea4db2ac86d2b9f248ed48ef12"
+      "source_sha256": "bdb607640ef924ad17a8cf3150c53319b790c1c42321892f1eb44dd5d1e89585",
+      "installed_sha256": "bdb607640ef924ad17a8cf3150c53319b790c1c42321892f1eb44dd5d1e89585"
+    },
+    "scripts/pact/converge.py": {
+      "management": "framework",
+      "source_path": ".pact/templates/compat/converge.py",
+      "source_sha256": "67ef44f76ed20acf6bffc564a969e605566e648b9496831052c4439debdbac74",
+      "installed_sha256": "67ef44f76ed20acf6bffc564a969e605566e648b9496831052c4439debdbac74"
+    },
+    "scripts/pact/report.py": {
+      "management": "framework",
+      "source_path": ".pact/templates/compat/report.py",
+      "source_sha256": "633e4c882b0277872d7152f642289c0feb378514c4dc420845f3cd6d225e407f",
+      "installed_sha256": "633e4c882b0277872d7152f642289c0feb378514c4dc420845f3cd6d225e407f"
     }
   }
 }
