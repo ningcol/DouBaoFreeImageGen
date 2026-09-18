@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="296063f8639fe27c47a21035e0b41bff22dbd9b4"
+          PACT_REF="c8f114928ec64436bc192591343f0b5d15332b2d"
 
           python - <<'PY'
           import json
@@ -40,11 +40,14 @@ jobs:
               framework = [p for p, r in files.items() if r.get("management") == "framework"]
               seed = [p for p, r in files.items() if r.get("management") == "seed"]
               runtime = [p for p in framework if p.startswith("scripts/pact/")]
+              schemas = [p for p in files if p.startswith(".pact/schema/")]
               print(
                   "PACT_INSTALL_BEFORE "
                   f"managed={len(files)} framework={len(framework)} "
-                  f"seed={len(seed)} scripts_pact={len(runtime)}"
+                  f"seed={len(seed)} scripts_pact={len(runtime)} "
+                  f"schemas={len(schemas)}"
               )
+              print("PACT_SCHEMA_BEFORE", *sorted(schemas), sep="\n")
           PY
 
           curl -fsSLo /tmp/pact-bootstrap.py \
@@ -78,13 +81,25 @@ jobs:
           framework = [p for p, r in files.items() if r.get("management") == "framework"]
           seed = [p for p, r in files.items() if r.get("management") == "seed"]
           runtime = [p for p in framework if p.startswith("scripts/pact/")]
+          schemas = [p for p in files if p.startswith(".pact/schema/")]
+          schema_framework = [
+              p for p in schemas
+              if files[p].get("management") == "framework"
+          ]
+          schema_seed = [
+              p for p in schemas
+              if files[p].get("management") == "seed"
+          ]
           compact = ".pact/pact.pyz" in framework
           print(
               "PACT_INSTALL_AFTER "
               f"managed={len(files)} framework={len(framework)} "
-              f"seed={len(seed)} scripts_pact={len(runtime)} compact={compact}"
+              f"seed={len(seed)} scripts_pact={len(runtime)} "
+              f"schemas={len(schemas)} schema_framework={len(schema_framework)} "
+              f"schema_seed={len(schema_seed)} compact={compact}"
           )
           print("PACT_RUNTIME_PATHS", *sorted(runtime), sep="\n")
+          print("PACT_SCHEMA_AFTER", *sorted(schemas), sep="\n")
           PY
 
           git add -A
@@ -95,11 +110,49 @@ jobs:
             git push origin HEAD:pact-real-user-test/multi-client-round-robin
           fi
 
-      - name: PACT health
+      - name: PACT health and legacy compatibility
         if: ${{ hashFiles('pact.py') != '' }}
         run: |
           python pact.py doctor --strict
           python pact.py status --json
+          python pact.py schema-lint
+          python scripts/pact/pact.py --help
+          python scripts/pact/converge.py --help
+          python scripts/pact/report.py --help
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          data = json.loads(
+              pathlib.Path(".pact/install.json").read_text(encoding="utf-8")
+          )
+          files = data["files"]
+          runtime = sorted(
+              p for p, record in files.items()
+              if record.get("management") == "framework"
+              and p.startswith("scripts/pact/")
+          )
+          expected_runtime = [
+              "scripts/pact/converge.py",
+              "scripts/pact/pact.py",
+              "scripts/pact/report.py",
+          ]
+          if runtime != expected_runtime:
+              raise SystemExit(
+                  f"unexpected compatibility runtime surface: {runtime}"
+              )
+
+          schema_framework = [
+              p for p, record in files.items()
+              if p.startswith(".pact/schema/")
+              and record.get("management") == "framework"
+          ]
+          if schema_framework:
+              raise SystemExit(
+                  f"framework schemas should be embedded, found: {schema_framework}"
+              )
+          PY
 
       - name: Prepare real user task
         if: ${{ hashFiles('pact.py') != '' }}
