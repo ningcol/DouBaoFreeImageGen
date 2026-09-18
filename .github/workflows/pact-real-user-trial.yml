@@ -1,0 +1,77 @@
+name: PACT Real User Trial
+
+on:
+  push:
+    branches:
+      - "pact-real-user-test/multi-client-round-robin"
+
+permissions:
+  contents: write
+
+jobs:
+  real-user-trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: "pact-real-user-test/multi-client-round-robin"
+          fetch-depth: 0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Adopt pinned PACT runtime if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f pact.py ]; then
+            echo "PACT is already adopted."
+            exit 0
+          fi
+
+          curl -fsSLo /tmp/pact-bootstrap.py \
+            https://raw.githubusercontent.com/ningcol/PACT/1fcd49d58a590e63d58baac905b2eccb3ab9162c/bootstrap.py
+
+          python /tmp/pact-bootstrap.py init \
+            --target . \
+            --repo ningcol/PACT \
+            --ref 1fcd49d58a590e63d58baac905b2eccb3ab9162c \
+            --apply
+
+          git config user.name "PACT Real User Trial"
+          git config user.email "pact-trial@users.noreply.github.com"
+          git add pact.py scripts/pact .pact docs .agents 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No PACT adoption files to commit."
+          else
+            git commit -m "test: adopt PACT for real-user trial"
+            git push origin HEAD:pact-real-user-test/multi-client-round-robin
+          fi
+
+      - name: PACT health
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py doctor --strict
+          python pact.py status --json
+
+      - name: Prepare real user task
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py task prepare \
+            "MCP 支持多个豆包客户端轮询分发图片生成任务，同一个客户端允许多个 Tab 并发处理" \
+            --success "多个已连接客户端能够轮询获得任务并返回各自结果" \
+            --accept "同一个客户端的多个 Tab 可以同时参与任务处理" \
+            --accept "客户端断开或某个 Tab 不可用时不会把整个任务分发流程卡死" \
+            --constraint "原有单客户端单 Tab 使用方式继续可用" \
+            --risk medium \
+            --code \
+            --task-id TASK-REAL-MULTI-CLIENT \
+            --json
+
+          echo "----- PACT CONTEXT -----"
+          cat .pact/tasks/TASK-REAL-MULTI-CLIENT/context.json
+          echo "----- TASK CONTRACT -----"
+          cat .pact/tasks/TASK-REAL-MULTI-CLIENT/contract.json
