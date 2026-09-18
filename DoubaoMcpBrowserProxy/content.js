@@ -39,6 +39,7 @@ let imageCollectionTimer = null;
 let shouldAutoReload = true; // 默认开启自动刷新
 let shouldClearCookies = true; // 默认清除cookie
 let downloadButton = null; // 下载按钮引用
+let activeRequestId = null; // 当前 Tab 正在处理的 MCP request_id
 
 // 监听来自background.js的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -61,8 +62,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // 直接发送并清理
         performSendAndCleanup();
     } else if (message.type === 'COMMAND_FROM_SERVER' && message.data) {
-        console.log(`[Message Handler] Received command from background: "${message.data}"`);
-        handleReceivedCommand(message.data);
+        activeRequestId = message.requestId || null;
+        console.log(
+            `[Message Handler] Received command from background: "${message.data}" (request=${activeRequestId || 'legacy'})`
+        );
+        handleReceivedCommand(message.data, activeRequestId);
     }
 });
 
@@ -98,13 +102,23 @@ function performSendAndCleanup() {
     imageCollectionTimer = null;
 
     // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
+    const completedRequestId = activeRequestId;
     if (foundImageUrls.length > 0) {
         console.log(`[Cleanup] Sending ${foundImageUrls.length} collected image URLs.`);
-        chrome.runtime.sendMessage({ type: 'COLLECTED_IMAGE_URLS', urls: foundImageUrls });
+        chrome.runtime.sendMessage({
+            type: 'COLLECTED_IMAGE_URLS',
+            requestId: completedRequestId,
+            urls: [...foundImageUrls]
+        });
     } else {
         console.log("[Cleanup] No image URLs were collected during this session. Sending empty list.");
-        chrome.runtime.sendMessage({ type: 'COLLECTED_IMAGE_URLS', urls: [] });
+        chrome.runtime.sendMessage({
+            type: 'COLLECTED_IMAGE_URLS',
+            requestId: completedRequestId,
+            urls: []
+        });
     }
+    activeRequestId = null;
 
     setTimeout(() => {
         console.log("[Cleanup] Initiating storage cleanup after send delay...");
@@ -147,13 +161,17 @@ function findChatInput() {
     return null;
 }
 
-async function handleReceivedCommand(commandText) {
+async function handleReceivedCommand(commandText, requestId = null) {
     const inputElement = findChatInput();
 
     if (!inputElement) {
         console.error("[Input] Chat input TEXTAREA element not found using selector:", CHAT_INPUT_SELECTOR);
         // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-        chrome.runtime.sendMessage({ type: 'error', message: 'Chat input textarea element not found' });
+        chrome.runtime.sendMessage({
+            type: 'error',
+            requestId,
+            message: 'Chat input textarea element not found'
+        });
         return;
     }
 
@@ -207,7 +225,12 @@ async function handleReceivedCommand(commandText) {
     } catch (e) {
         console.error("[Input] Error during input simulation:", e);
         // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-        chrome.runtime.sendMessage({ type: 'error', message: 'Input simulation failed', error: e.message });
+        chrome.runtime.sendMessage({
+            type: 'error',
+            requestId,
+            message: 'Input simulation failed',
+            error: e.message
+        });
     }
 }
 
