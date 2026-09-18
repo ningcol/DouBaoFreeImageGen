@@ -75,6 +75,23 @@ class ClientPoolTests(unittest.IsolatedAsyncioTestCase):
         self.assertIs(selected2, second)
         await context.release_client(selected2)
 
+    async def test_single_client_single_tab_remains_capacity_one(self) -> None:
+        context = server.AppContext()
+        ws = FakeWebSocket("legacy-single")
+        client = await context.register_client(ws)
+        await context.update_client_capacity(ws, 1)
+
+        selected = await context.acquire_client(wait_timeout=0)
+        blocked = await context.acquire_client(wait_timeout=0)
+
+        self.assertIs(selected, client)
+        self.assertIsNone(blocked)
+        await context.release_client(selected)
+
+        selected_again = await context.acquire_client(wait_timeout=0)
+        self.assertIs(selected_again, client)
+        await context.release_client(selected_again)
+
     async def test_one_client_can_expose_multiple_tab_slots(self) -> None:
         context = server.AppContext()
         ws = FakeWebSocket("one-client")
