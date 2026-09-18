@@ -248,6 +248,8 @@ jobs:
 
       - name: Finish through PACT trust gate
         if: ${{ hashFiles('pact.py') != '' }}
+        shell: bash
         run: |
+          set -euo pipefail
           python pact.py task finish TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-finish.json
           python pact.py eval --task TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-eval.json
