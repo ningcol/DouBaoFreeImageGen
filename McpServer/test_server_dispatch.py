@@ -144,6 +144,22 @@ class ClientPoolTests(unittest.IsolatedAsyncioTestCase):
         context.remove_pending_task("first")
         first.cancel()
 
+    async def test_browser_reported_availability_blocks_stale_reconnect_capacity(self) -> None:
+        context = server.AppContext()
+        ws = FakeWebSocket("reconnected")
+        client = await context.register_client(ws)
+
+        # Browser may reconnect while two tabs are still busy with requests from
+        # the previous socket. Total ready tabs alone must not advertise them free.
+        await context.update_client_capacity(ws, ready_tabs=2, available_tabs=0)
+        self.assertEqual(client.available_slots, 0)
+        self.assertIsNone(await context.acquire_client(wait_timeout=0))
+
+        await context.update_client_capacity(ws, ready_tabs=2, available_tabs=1)
+        selected = await context.acquire_client(wait_timeout=0)
+        self.assertIs(selected, client)
+        await context.release_client(selected)
+
     async def test_zero_ready_tabs_are_not_schedulable(self) -> None:
         context = server.AppContext()
         ws = FakeWebSocket("client")
