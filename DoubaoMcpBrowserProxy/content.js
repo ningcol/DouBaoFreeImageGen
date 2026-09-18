@@ -39,6 +39,7 @@ let imageCollectionTimer = null;
 let shouldAutoReload = true; // 默认开启自动刷新
 let shouldClearCookies = true; // 默认清除cookie
 let downloadButton = null; // 下载按钮引用
+let activeRequestId = null; // 当前 Tab 正在处理的 MCP request_id
 
 // 监听来自background.js的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -58,11 +59,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // 更新下载按钮状态
         updateDownloadButton();
 
-        // 直接发送并清理
-        performSendAndCleanup();
+        // 使用网络流开始时冻结的 requestId，避免旧流晚到后串到新任务。
+        performSendAndCleanup(message.requestId ?? activeRequestId);
     } else if (message.type === 'COMMAND_FROM_SERVER' && message.data) {
-        console.log(`[Message Handler] Received command from background: "${message.data}"`);
-        handleReceivedCommand(message.data);
+        activeRequestId = message.requestId || null;
+        console.log(
+            `[Message Handler] Received command from background: "${message.data}" (request=${activeRequestId || 'legacy'})`
+        );
+        handleReceivedCommand(message.data, activeRequestId);
     }
 });
 
@@ -93,17 +97,33 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 });
 
 // --- Image Collection & Cleanup ---
-function performSendAndCleanup() {
+function performSendAndCleanup(completedRequestId = activeRequestId) {
     console.log("[Cleanup] Image discovery settled. Initiating send and cleanup...");
     imageCollectionTimer = null;
 
-    // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-    if (foundImageUrls.length > 0) {
-        console.log(`[Cleanup] Sending ${foundImageUrls.length} collected image URLs.`);
-        chrome.runtime.sendMessage({ type: 'COLLECTED_IMAGE_URLS', urls: foundImageUrls });
+    // Snapshot and clear request-scoped image state before notifying background.
+    // Background can immediately dispatch the next task after this message.
+    const urlsToSend = [...foundImageUrls];
+    foundImageUrls.length = 0;
+    processedUrls.clear();
+
+    if (urlsToSend.length > 0) {
+        console.log(`[Cleanup] Sending ${urlsToSend.length} collected image URLs.`);
+        chrome.runtime.sendMessage({
+            type: 'COLLECTED_IMAGE_URLS',
+            requestId: completedRequestId,
+            urls: urlsToSend
+        });
     } else {
         console.log("[Cleanup] No image URLs were collected during this session. Sending empty list.");
-        chrome.runtime.sendMessage({ type: 'COLLECTED_IMAGE_URLS', urls: [] });
+        chrome.runtime.sendMessage({
+            type: 'COLLECTED_IMAGE_URLS',
+            requestId: completedRequestId,
+            urls: []
+        });
+    }
+    if (activeRequestId === completedRequestId) {
+        activeRequestId = null;
     }
 
     setTimeout(() => {
@@ -123,9 +143,7 @@ function performSendAndCleanup() {
             console.error("[Cleanup] Error clearing sessionStorage:", e);
         }
 
-        foundImageUrls.length = 0;
-        processedUrls.clear();
-        console.log("[Cleanup] Internal image lists cleared.");
+        console.log("[Cleanup] Request-scoped image lists already cleared.");
 
         if (shouldAutoReload) {
             console.log("[Cleanup] Auto reload is enabled. Reloading page...");
@@ -147,13 +165,20 @@ function findChatInput() {
     return null;
 }
 
-async function handleReceivedCommand(commandText) {
+async function handleReceivedCommand(commandText, requestId = null) {
     const inputElement = findChatInput();
 
     if (!inputElement) {
         console.error("[Input] Chat input TEXTAREA element not found using selector:", CHAT_INPUT_SELECTOR);
         // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-        chrome.runtime.sendMessage({ type: 'error', message: 'Chat input textarea element not found' });
+        chrome.runtime.sendMessage({
+            type: 'error',
+            requestId,
+            message: 'Chat input textarea element not found'
+        });
+        if (activeRequestId === requestId) {
+            activeRequestId = null;
+        }
         return;
     }
 
@@ -207,7 +232,15 @@ async function handleReceivedCommand(commandText) {
     } catch (e) {
         console.error("[Input] Error during input simulation:", e);
         // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-        chrome.runtime.sendMessage({ type: 'error', message: 'Input simulation failed', error: e.message });
+        chrome.runtime.sendMessage({
+            type: 'error',
+            requestId,
+            message: 'Input simulation failed',
+            error: e.message
+        });
+        if (activeRequestId === requestId) {
+            activeRequestId = null;
+        }
     }
 }
 

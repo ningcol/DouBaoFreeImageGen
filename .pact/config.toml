@@ -1,0 +1,23 @@
+version = 1
+
+[owner]
+role = "product_project_owner"
+language = "auto"
+technical_depth = "product"
+
+[owner.communication]
+prefer = [
+  "user_behavior",
+  "business_behavior",
+  "page_flow",
+  "data_meaning",
+  "verification",
+]
+hide_by_default = [
+  "internal_class_design",
+  "framework_mechanics",
+  "implementation_patterns",
+]
+explain_consequence_before_technical_term = true
+progressive_disclosure = true
+decision_translation = "consequence_first"
