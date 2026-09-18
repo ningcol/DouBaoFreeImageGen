@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pact.local/schema/config.schema.json",
+  "title": "PACT Project Configuration",
+  "type": "object",
+  "required": ["version", "owner"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "owner": {
+      "type": "object",
+      "required": ["role", "language", "technical_depth", "communication"],
+      "additionalProperties": false,
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "language": {
+          "type": "string",
+          "pattern": "^(auto|[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)$"
+        },
+        "technical_depth": {
+          "enum": ["product", "balanced", "technical"]
+        },
+        "communication": {
+          "type": "object",
+          "required": [
+            "prefer",
+            "hide_by_default",
+            "explain_consequence_before_technical_term",
+            "progressive_disclosure",
+            "decision_translation"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "prefer": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "uniqueItems": true
+            },
+            "hide_by_default": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "uniqueItems": true
+            },
+            "explain_consequence_before_technical_term": { "type": "boolean" },
+            "progressive_disclosure": { "type": "boolean" },
+            "decision_translation": { "enum": ["consequence_first", "direct"] }
+          }
+        }
+      }
+    }
+  }
+}

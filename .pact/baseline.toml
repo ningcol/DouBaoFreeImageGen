@@ -1,0 +1,17 @@
+version = 1
+
+# "reviewed" means the baseline area was deliberately inspected.
+# "not_applicable" is an explicit project decision.
+# Do not mark an area reviewed merely because AI generated documents for it.
+
+[reviews]
+agent_bootstrap = "pending"
+vocabulary = "pending"
+product_truth = "pending"
+architecture = "pending"
+truth_ownership = "pending"
+owner_profile = "pending"
+verification = "pending"
+known_drift = "pending"
+
+[notes]

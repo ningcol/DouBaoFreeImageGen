@@ -1,0 +1,13 @@
+version = 1
+
+# Architecture fitness functions are project-owned executable invariants.
+# PACT does not prescribe architecture patterns.
+#
+# [[checks]]
+# id = "no-domain-to-ui"
+# description = "Domain code must not import UI modules."
+# command = ["python", "scripts/architecture/check_domain_dependencies.py"]
+# severity = "error"
+# timeout_seconds = 120
+
+checks = []

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pact.local/schema/task-observation.schema.json",
+  "title": "PACT Machine Task Observation",
+  "type": "object",
+  "required": [
+    "version",
+    "task_id",
+    "task_status",
+    "risk_level",
+    "acceptance",
+    "context",
+    "runs",
+    "completion",
+    "evidence",
+    "convergence",
+    "owner_status",
+    "human_required"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "task_id": { "type": "string", "minLength": 1 },
+    "task_status": { "type": "string", "minLength": 1 },
+    "risk_level": { "enum": ["low", "medium", "high"] },
+    "acceptance": {
+      "type": "object",
+      "required": [
+        "total", "outcomes", "constraints", "evidence_verified",
+        "owner_report_covered", "unverified", "owner_report_missing"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "outcomes": { "type": "integer", "minimum": 0 },
+        "constraints": { "type": "integer", "minimum": 0 },
+        "evidence_verified": { "type": "integer", "minimum": 0 },
+        "owner_report_covered": { "type": "integer", "minimum": 0 },
+        "unverified": { "type": "array", "items": { "type": "string" } },
+        "owner_report_missing": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": ["knowledge_artifacts", "code_artifacts", "known_unknowns"],
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_artifacts": { "type": "integer", "minimum": 0 },
+        "code_artifacts": { "type": "integer", "minimum": 0 },
+        "known_unknowns": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "runs": {
+      "type": "object",
+      "required": ["total", "passed", "failed", "workspace_changed"],
+      "additionalProperties": false,
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "workspace_changed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "completion": {
+      "type": "object",
+      "required": [
+        "attempts", "failed_attempts", "stale_workspace_blocks",
+        "stale_contract_blocks", "acceptance_gap_blocks",
+        "ci_requirement_blocks", "final_complete"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "attempts": { "type": "integer", "minimum": 0 },
+        "failed_attempts": { "type": "integer", "minimum": 0 },
+        "stale_workspace_blocks": { "type": "integer", "minimum": 0 },
+        "stale_contract_blocks": { "type": "integer", "minimum": 0 },
+        "acceptance_gap_blocks": { "type": "integer", "minimum": 0 },
+        "ci_requirement_blocks": { "type": "integer", "minimum": 0 },
+        "final_complete": { "type": "boolean" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["claims", "passed", "failed", "unverified"],
+      "additionalProperties": false,
+      "properties": {
+        "claims": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "unverified": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "convergence": {
+      "type": "object",
+      "required": ["findings", "owner_decisions"],
+      "additionalProperties": false,
+      "properties": {
+        "findings": { "type": "integer", "minimum": 0 },
+        "owner_decisions": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "owner_status": {
+      "type": ["string", "null"]
+    },
+    "human_required": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  }
+}

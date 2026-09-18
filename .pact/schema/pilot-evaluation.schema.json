@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pact.local/schema/pilot-evaluation.schema.json",
+  "title": "PACT Pilot Evaluation Record",
+  "type": "object",
+  "required": [
+    "version",
+    "task_id",
+    "mode",
+    "risk_level",
+    "outcome",
+    "owner_interactions",
+    "completion_integrity",
+    "project_memory",
+    "context_quality"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "task_id": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["pact", "baseline"] },
+    "risk_level": { "enum": ["low", "medium", "high"] },
+    "outcome": { "enum": ["completed", "partial", "blocked"] },
+    "owner_interactions": {
+      "type": "object",
+      "required": [
+        "product_decisions",
+        "technical_escalations",
+        "clarification_rounds",
+        "comprehension"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "product_decisions": { "type": "integer", "minimum": 0 },
+        "technical_escalations": { "type": "integer", "minimum": 0 },
+        "clarification_rounds": { "type": "integer", "minimum": 0 },
+        "comprehension": {
+          "enum": ["clear", "needed-clarification", "unclear"]
+        }
+      }
+    },
+    "completion_integrity": {
+      "type": "object",
+      "required": [
+        "unsupported_done_claims_blocked",
+        "evidence_gaps_found",
+        "convergence_findings"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "unsupported_done_claims_blocked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence_gaps_found": { "type": "integer", "minimum": 0 },
+        "convergence_findings": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "project_memory": {
+      "type": "object",
+      "required": ["explain_used", "explain_outcome"],
+      "additionalProperties": false,
+      "properties": {
+        "explain_used": { "type": "boolean" },
+        "explain_outcome": {
+          "enum": ["not-used", "resolved", "partial", "failed"]
+        }
+      }
+    },
+    "context_quality": {
+      "type": "object",
+      "required": [
+        "knowledge_artifacts",
+        "code_artifacts",
+        "known_unknowns",
+        "overload_observed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "knowledge_artifacts": { "type": "integer", "minimum": 0 },
+        "code_artifacts": { "type": "integer", "minimum": 0 },
+        "known_unknowns": { "type": "integer", "minimum": 0 },
+        "overload_observed": { "type": "boolean" }
+      }
+    },
+    "pact_overhead_minutes": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,582 @@
+{
+  "format_version": 1,
+  "runtime_version": "0.3.0",
+  "files": {
+    "docs/governance/completion-contract.md": {
+      "management": "seed",
+      "source_path": "docs/governance/completion-contract.md",
+      "source_sha256": "b40bdc9413b6ae1881944d12064db691b38141df5c304c837aeb57d9959870bb",
+      "installed_sha256": "b40bdc9413b6ae1881944d12064db691b38141df5c304c837aeb57d9959870bb"
+    },
+    "docs/governance/constitution.md": {
+      "management": "seed",
+      "source_path": "docs/governance/constitution.md",
+      "source_sha256": "aa5ed14a2b1e3ac11b1994c460d43a1a3b0bc6acc4f51baab56f48a0ccbccb91",
+      "installed_sha256": "aa5ed14a2b1e3ac11b1994c460d43a1a3b0bc6acc4f51baab56f48a0ccbccb91"
+    },
+    "docs/governance/decision-authority.md": {
+      "management": "seed",
+      "source_path": "docs/governance/decision-authority.md",
+      "source_sha256": "231e68e18a7fe6289fed6469b67e1e30066557015f5208b47c471a7770712288",
+      "installed_sha256": "231e68e18a7fe6289fed6469b67e1e30066557015f5208b47c471a7770712288"
+    },
+    "docs/governance/human-interface.md": {
+      "management": "seed",
+      "source_path": "docs/governance/human-interface.md",
+      "source_sha256": "46ca387f47716c3462fddf5e32e8da988ca8d2f633ce415979e8e485285a32cb",
+      "installed_sha256": "46ca387f47716c3462fddf5e32e8da988ca8d2f633ce415979e8e485285a32cb"
+    },
+    "docs/governance/truth-ownership.md": {
+      "management": "seed",
+      "source_path": "docs/governance/truth-ownership.md",
+      "source_sha256": "1e16de5d631fdc62cf72ebd318f3e70c41c2cf6f4a4508070532c321299785e3",
+      "installed_sha256": "1e16de5d631fdc62cf72ebd318f3e70c41c2cf6f4a4508070532c321299785e3"
+    },
+    "pact.py": {
+      "management": "framework",
+      "source_path": "pact.py",
+      "source_sha256": "733e2cb5bda9daaa465468b67c388b88046c9aaf6fd1cd2af11ca39ece602ac8",
+      "installed_sha256": "733e2cb5bda9daaa465468b67c388b88046c9aaf6fd1cd2af11ca39ece602ac8"
+    },
+    "docs/product/README.md": {
+      "management": "framework",
+      "source_path": "docs/product/README.md",
+      "source_sha256": "f80e6a99834348ba0e1e895533ee84da31d705dbdbf3934370c312a2d2f7e57a",
+      "installed_sha256": "f80e6a99834348ba0e1e895533ee84da31d705dbdbf3934370c312a2d2f7e57a"
+    },
+    "docs/product/glossary/README.md": {
+      "management": "framework",
+      "source_path": "docs/product/glossary/README.md",
+      "source_sha256": "2f7b2f6e3e7af3a3edaf0928489d0c5f4f68f3916ff130d9ae9ad754bd34933c",
+      "installed_sha256": "2f7b2f6e3e7af3a3edaf0928489d0c5f4f68f3916ff130d9ae9ad754bd34933c"
+    },
+    "docs/product/domains/README.md": {
+      "management": "framework",
+      "source_path": "docs/product/domains/README.md",
+      "source_sha256": "9cc9e3115bc46d0eecc1b4bed3e2f34e3936322c45561274ecf444602d44c897",
+      "installed_sha256": "9cc9e3115bc46d0eecc1b4bed3e2f34e3936322c45561274ecf444602d44c897"
+    },
+    "docs/product/domains/TEMPLATE.md": {
+      "management": "framework",
+      "source_path": "docs/product/domains/TEMPLATE.md",
+      "source_sha256": "05a8559b707a0def465f9b721bf6549034159568daf94228745266c75b977f6d",
+      "installed_sha256": "05a8559b707a0def465f9b721bf6549034159568daf94228745266c75b977f6d"
+    },
+    "docs/product/rules/README.md": {
+      "management": "framework",
+      "source_path": "docs/product/rules/README.md",
+      "source_sha256": "3a2b35fb435cb8caefcef243bad5346ac15fd7e727ac76ed1ea2c876eda6075e",
+      "installed_sha256": "3a2b35fb435cb8caefcef243bad5346ac15fd7e727ac76ed1ea2c876eda6075e"
+    },
+    "docs/product/rules/TEMPLATE.md": {
+      "management": "framework",
+      "source_path": "docs/product/rules/TEMPLATE.md",
+      "source_sha256": "2eea357493637d532ece78f48b883e856d0a63b50294ca9ba1b425929a33b1ad",
+      "installed_sha256": "2eea357493637d532ece78f48b883e856d0a63b50294ca9ba1b425929a33b1ad"
+    },
+    "docs/architecture/README.md": {
+      "management": "framework",
+      "source_path": "docs/architecture/README.md",
+      "source_sha256": "f81c8364782e5f933864dce264c3534130ff1493530da51ada8dfe0bd12451d1",
+      "installed_sha256": "f81c8364782e5f933864dce264c3534130ff1493530da51ada8dfe0bd12451d1"
+    },
+    "docs/changes/README.md": {
+      "management": "framework",
+      "source_path": "docs/changes/README.md",
+      "source_sha256": "9b493fea6c89e2b907e34b8c934937958c4796cd368a98a9e68eb211775d4a7e",
+      "installed_sha256": "9b493fea6c89e2b907e34b8c934937958c4796cd368a98a9e68eb211775d4a7e"
+    },
+    "docs/changes/TEMPLATE.md": {
+      "management": "framework",
+      "source_path": "docs/changes/TEMPLATE.md",
+      "source_sha256": "67d6aa82eda67aa6060a6d5f769110dd7cab8fd6f8039c99ff87c98158dccb51",
+      "installed_sha256": "67d6aa82eda67aa6060a6d5f769110dd7cab8fd6f8039c99ff87c98158dccb51"
+    },
+    "docs/changes/active/README.md": {
+      "management": "framework",
+      "source_path": "docs/changes/active/README.md",
+      "source_sha256": "e0737f6bab817614c78275ecafdc6954c62dac3a05798c0ae353e4acfea9fb8c",
+      "installed_sha256": "e0737f6bab817614c78275ecafdc6954c62dac3a05798c0ae353e4acfea9fb8c"
+    },
+    "docs/changes/completed/README.md": {
+      "management": "framework",
+      "source_path": "docs/changes/completed/README.md",
+      "source_sha256": "c7c220a43faccf9f9419061ab1671e8c26a79e8ac617ee26550569aa5a7e0ed4",
+      "installed_sha256": "c7c220a43faccf9f9419061ab1671e8c26a79e8ac617ee26550569aa5a7e0ed4"
+    },
+    "docs/changes/abandoned/README.md": {
+      "management": "framework",
+      "source_path": "docs/changes/abandoned/README.md",
+      "source_sha256": "0f8383635632e34bb3d67f16762f0e95ab50773b6b7c787530548a130902e3ae",
+      "installed_sha256": "0f8383635632e34bb3d67f16762f0e95ab50773b6b7c787530548a130902e3ae"
+    },
+    "docs/drift/README.md": {
+      "management": "framework",
+      "source_path": "docs/drift/README.md",
+      "source_sha256": "ed13ce0ade9175340e7ab4f7af0b7b5e867dc11099ccf3ff4d9574a8f8e1675d",
+      "installed_sha256": "ed13ce0ade9175340e7ab4f7af0b7b5e867dc11099ccf3ff4d9574a8f8e1675d"
+    },
+    "docs/drift/TEMPLATE.md": {
+      "management": "framework",
+      "source_path": "docs/drift/TEMPLATE.md",
+      "source_sha256": "81a43f9c88ef26c702546d775ace11a146ff216f5f1f701fb72712b1eda79ba3",
+      "installed_sha256": "81a43f9c88ef26c702546d775ace11a146ff216f5f1f701fb72712b1eda79ba3"
+    },
+    "docs/drift/known/README.md": {
+      "management": "framework",
+      "source_path": "docs/drift/known/README.md",
+      "source_sha256": "5c21cd8619044eb3c3f0c21af7ae280cfc1d3d9331ffb6a92055c7df033a2998",
+      "installed_sha256": "5c21cd8619044eb3c3f0c21af7ae280cfc1d3d9331ffb6a92055c7df033a2998"
+    },
+    "docs/drift/resolved/README.md": {
+      "management": "framework",
+      "source_path": "docs/drift/resolved/README.md",
+      "source_sha256": "353c06cb5ae14e0721c0b7d39dbf00956cfb4efcfca93c0283c21e1e3ae21f2b",
+      "installed_sha256": "353c06cb5ae14e0721c0b7d39dbf00956cfb4efcfca93c0283c21e1e3ae21f2b"
+    },
+    "docs/drift/accepted/README.md": {
+      "management": "framework",
+      "source_path": "docs/drift/accepted/README.md",
+      "source_sha256": "534b443b85202e02489c7c8c3fbf2fd6be77d69ee9d2aafc3e1c3a34a9f91b49",
+      "installed_sha256": "534b443b85202e02489c7c8c3fbf2fd6be77d69ee9d2aafc3e1c3a34a9f91b49"
+    },
+    "docs/initialization.md": {
+      "management": "framework",
+      "source_path": "docs/initialization.md",
+      "source_sha256": "2444dec1fb567a0a4eb4793f67f215d2f62214e03d3761ba93f8088b80685387",
+      "installed_sha256": "2444dec1fb567a0a4eb4793f67f215d2f62214e03d3761ba93f8088b80685387"
+    },
+    "docs/initialization-checklist.md": {
+      "management": "framework",
+      "source_path": "docs/initialization-checklist.md",
+      "source_sha256": "7cf1c71b82333f911694880eec28e546aae6ce59025511a66e40d6f220cf51b5",
+      "installed_sha256": "7cf1c71b82333f911694880eec28e546aae6ce59025511a66e40d6f220cf51b5"
+    },
+    "docs/evaluation/pilot-scorecard.md": {
+      "management": "framework",
+      "source_path": "docs/evaluation/pilot-scorecard.md",
+      "source_sha256": "f71b1e7ed3f84f57ff4f2c8b56f81e17269b4829987f525444329ab5ff10b906",
+      "installed_sha256": "f71b1e7ed3f84f57ff4f2c8b56f81e17269b4829987f525444329ab5ff10b906"
+    },
+    ".agents/decisions/README.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/README.md",
+      "source_sha256": "1a05cf403ee56daab0730dea408a74f8b63d3175c9d6abe1136bada2b2accae3",
+      "installed_sha256": "1a05cf403ee56daab0730dea408a74f8b63d3175c9d6abe1136bada2b2accae3"
+    },
+    ".agents/decisions/TEMPLATE.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/TEMPLATE.md",
+      "source_sha256": "f3046135d75e264f3311b59ba97be25a4eb59fdde53243684016851891f5e74c",
+      "installed_sha256": "f3046135d75e264f3311b59ba97be25a4eb59fdde53243684016851891f5e74c"
+    },
+    ".agents/decisions/proposed/README.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/proposed/README.md",
+      "source_sha256": "4a0f88655a719351a44238e6cfd8d6009a3f3cf89ac67e1d367824f20b4fc4fd",
+      "installed_sha256": "4a0f88655a719351a44238e6cfd8d6009a3f3cf89ac67e1d367824f20b4fc4fd"
+    },
+    ".agents/decisions/implemented/README.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/implemented/README.md",
+      "source_sha256": "ade9bd5e864681dc2c6b16669ba779373f5282854c91f8da1e65511e6395e92d",
+      "installed_sha256": "ade9bd5e864681dc2c6b16669ba779373f5282854c91f8da1e65511e6395e92d"
+    },
+    ".agents/decisions/rejected/README.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/rejected/README.md",
+      "source_sha256": "37b6bd9f3979abb5925d8a7337201caa9c93b3a41b2a2681c4591f3834a4588f",
+      "installed_sha256": "37b6bd9f3979abb5925d8a7337201caa9c93b3a41b2a2681c4591f3834a4588f"
+    },
+    ".agents/decisions/archived/README.md": {
+      "management": "framework",
+      "source_path": ".agents/decisions/archived/README.md",
+      "source_sha256": "7da4ab533470f7e71cc6faaf2a5301ea5f158ff9b1d19f89036055127a0c274a",
+      "installed_sha256": "7da4ab533470f7e71cc6faaf2a5301ea5f158ff9b1d19f89036055127a0c274a"
+    },
+    ".pact/VERSION": {
+      "management": "framework",
+      "source_path": ".pact/VERSION",
+      "source_sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0",
+      "installed_sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0"
+    },
+    ".agents/skills/README.md": {
+      "management": "seed",
+      "source_path": ".agents/skills/README.md",
+      "source_sha256": "8d214c1ffa93d03cadcde09786e747ab57cace270f9ca1cc491964844ba0465d",
+      "installed_sha256": "8d214c1ffa93d03cadcde09786e747ab57cace270f9ca1cc491964844ba0465d"
+    },
+    ".agents/skills/convergence-review.md": {
+      "management": "seed",
+      "source_path": ".agents/skills/convergence-review.md",
+      "source_sha256": "174d5e4f19a0fbf3d0f17db59071ce63b723e056a654330bcb0ca613523146df",
+      "installed_sha256": "174d5e4f19a0fbf3d0f17db59071ce63b723e056a654330bcb0ca613523146df"
+    },
+    ".agents/skills/owner-report.md": {
+      "management": "seed",
+      "source_path": ".agents/skills/owner-report.md",
+      "source_sha256": "f2de773f21b3fc80963c5ab5ce7687f258f30d48bd2121678045d7d72e2bfcfb",
+      "installed_sha256": "f2de773f21b3fc80963c5ab5ce7687f258f30d48bd2121678045d7d72e2bfcfb"
+    },
+    ".agents/skills/project-explain.md": {
+      "management": "seed",
+      "source_path": ".agents/skills/project-explain.md",
+      "source_sha256": "da9789e4b49acd72217a4a886f4bb56a45e409c56f27ca1dd061d5a7f5ec33b5",
+      "installed_sha256": "da9789e4b49acd72217a4a886f4bb56a45e409c56f27ca1dd061d5a7f5ec33b5"
+    },
+    ".pact/schema/artifact.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/artifact.schema.json",
+      "source_sha256": "1722b89d87ea13a466ff23a040ef320fe79deddb39e31daa316d8cdbf604d4c2",
+      "installed_sha256": "1722b89d87ea13a466ff23a040ef320fe79deddb39e31daa316d8cdbf604d4c2"
+    },
+    ".pact/schema/baseline.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/baseline.schema.json",
+      "source_sha256": "1537d43870ccdf3f6693ca42ad746fe6fb2aee6750afba008e03c609d3d51e69",
+      "installed_sha256": "1537d43870ccdf3f6693ca42ad746fe6fb2aee6750afba008e03c609d3d51e69"
+    },
+    ".pact/schema/code-map.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/code-map.schema.json",
+      "source_sha256": "4adf5ad6c370d3fae1a2199dd86f23c0bf0f799136be8f943912673cf110e566",
+      "installed_sha256": "4adf5ad6c370d3fae1a2199dd86f23c0bf0f799136be8f943912673cf110e566"
+    },
+    ".pact/schema/config.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/config.schema.json",
+      "source_sha256": "c05ac134411afbf312e0c26a917ba1d35919f1a7372dc4c6528e1ed86137725b",
+      "installed_sha256": "c05ac134411afbf312e0c26a917ba1d35919f1a7372dc4c6528e1ed86137725b"
+    },
+    ".pact/schema/context-envelope.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/context-envelope.schema.json",
+      "source_sha256": "3d80d1d99f09d0f3cd9aa46af8d41a1bcea1b48b00cee753cb2f449eecf7b7ff",
+      "installed_sha256": "3d80d1d99f09d0f3cd9aa46af8d41a1bcea1b48b00cee753cb2f449eecf7b7ff"
+    },
+    ".pact/schema/convergence-report.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/convergence-report.schema.json",
+      "source_sha256": "c981e8b4e28e1a7315d1eb70af6fbcd90a2bf93670a31a51fc37f9e679d44575",
+      "installed_sha256": "c981e8b4e28e1a7315d1eb70af6fbcd90a2bf93670a31a51fc37f9e679d44575"
+    },
+    ".pact/schema/evidence-receipt.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/evidence-receipt.schema.json",
+      "source_sha256": "9d48ee2b1691296350a4798fa8341641c27aca5d0d80c72db0839f5825c926f4",
+      "installed_sha256": "9d48ee2b1691296350a4798fa8341641c27aca5d0d80c72db0839f5825c926f4"
+    },
+    ".pact/schema/explanation-packet.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/explanation-packet.schema.json",
+      "source_sha256": "2ff400389aec6df3fa372477cdfb12e0b96c848ce0e7015aad0ce1703fd2fc02",
+      "installed_sha256": "2ff400389aec6df3fa372477cdfb12e0b96c848ce0e7015aad0ce1703fd2fc02"
+    },
+    ".pact/schema/fitness.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/fitness.schema.json",
+      "source_sha256": "9531cd35ff4afb3203658e8f80fbdf3e1889ff4223ac52d50601e6ea4a8d5a24",
+      "installed_sha256": "9531cd35ff4afb3203658e8f80fbdf3e1889ff4223ac52d50601e6ea4a8d5a24"
+    },
+    ".pact/schema/impact-report.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/impact-report.schema.json",
+      "source_sha256": "f149f2dcce6c7d84e8d3b5e925e8f5d8707b59299360367a0135625fe8a653a3",
+      "installed_sha256": "f149f2dcce6c7d84e8d3b5e925e8f5d8707b59299360367a0135625fe8a653a3"
+    },
+    ".pact/schema/install-manifest.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/install-manifest.schema.json",
+      "source_sha256": "18588d92d0cbe2761d2ee42fc57dc3a9d1c92d8b080fdf471d001005d7738a00",
+      "installed_sha256": "18588d92d0cbe2761d2ee42fc57dc3a9d1c92d8b080fdf471d001005d7738a00"
+    },
+    ".pact/schema/owner-report.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/owner-report.schema.json",
+      "source_sha256": "61b86cac8d4676f021c6186c30498daa2bd0009a06ba7d7a79a6a5ea96f06480",
+      "installed_sha256": "61b86cac8d4676f021c6186c30498daa2bd0009a06ba7d7a79a6a5ea96f06480"
+    },
+    ".pact/schema/pilot-evaluation.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/pilot-evaluation.schema.json",
+      "source_sha256": "c8e8091bfa1194fedaaa3a3dc3dc83a9360e10b9420f58337517355da7af51bc",
+      "installed_sha256": "c8e8091bfa1194fedaaa3a3dc3dc83a9360e10b9420f58337517355da7af51bc"
+    },
+    ".pact/schema/run-receipt.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/run-receipt.schema.json",
+      "source_sha256": "d781be40cc4eaf493f3bdcabb5dacdc1b3feb365f91b4acf6574f32cd52c5752",
+      "installed_sha256": "d781be40cc4eaf493f3bdcabb5dacdc1b3feb365f91b4acf6574f32cd52c5752"
+    },
+    ".pact/schema/task-contract.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/task-contract.schema.json",
+      "source_sha256": "4ac10de0673c50b1ff27104fe595acf0845007e3423df6b58f731f0beea0952d",
+      "installed_sha256": "4ac10de0673c50b1ff27104fe595acf0845007e3423df6b58f731f0beea0952d"
+    },
+    ".pact/schema/task-observation.schema.json": {
+      "management": "framework",
+      "source_path": ".pact/schema/task-observation.schema.json",
+      "source_sha256": "444054a955e93b5fb668342a737fc5875ac3176e3900341cf378ce584ffff8d5",
+      "installed_sha256": "444054a955e93b5fb668342a737fc5875ac3176e3900341cf378ce584ffff8d5"
+    },
+    "scripts/pact/README.md": {
+      "management": "framework",
+      "source_path": "scripts/pact/README.md",
+      "source_sha256": "10af8342f684aa43853d8fd9ac3e02bbf8dfe84860ef19b78c3362bb65820d25",
+      "installed_sha256": "10af8342f684aa43853d8fd9ac3e02bbf8dfe84860ef19b78c3362bb65820d25"
+    },
+    "scripts/pact/audit.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/audit.py",
+      "source_sha256": "5b77d9dbcdba9a903e3a972183a5c30c3f4fe9f9375509426495d385b6e3ba3d",
+      "installed_sha256": "5b77d9dbcdba9a903e3a972183a5c30c3f4fe9f9375509426495d385b6e3ba3d"
+    },
+    "scripts/pact/cache.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/cache.py",
+      "source_sha256": "74ca7b43f4829425bae25f092e00b8d0845395ca8ea73d4f6d9622b5ac4d50ab",
+      "installed_sha256": "74ca7b43f4829425bae25f092e00b8d0845395ca8ea73d4f6d9622b5ac4d50ab"
+    },
+    "scripts/pact/check.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/check.py",
+      "source_sha256": "d5e14e943868dd2b9ccc0db3f7c40360500353a386896f092faf4335717a9bed",
+      "installed_sha256": "d5e14e943868dd2b9ccc0db3f7c40360500353a386896f092faf4335717a9bed"
+    },
+    "scripts/pact/code_map.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/code_map.py",
+      "source_sha256": "ee85dc719a5018b5cbdb7e073816ecaf86a1222782ceb886250d803528d0f82d",
+      "installed_sha256": "ee85dc719a5018b5cbdb7e073816ecaf86a1222782ceb886250d803528d0f82d"
+    },
+    "scripts/pact/complete.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/complete.py",
+      "source_sha256": "8781152837f8e68a7f3cf6cffd9b8bfd6ea5c4fdda0829c4f44f6bcccfd6cba4",
+      "installed_sha256": "8781152837f8e68a7f3cf6cffd9b8bfd6ea5c4fdda0829c4f44f6bcccfd6cba4"
+    },
+    "scripts/pact/context.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/context.py",
+      "source_sha256": "6efaf1b0d455127d0faafd0ed99eca06d45473282a226833cf34ff0e7244c716",
+      "installed_sha256": "6efaf1b0d455127d0faafd0ed99eca06d45473282a226833cf34ff0e7244c716"
+    },
+    "scripts/pact/converge.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/converge.py",
+      "source_sha256": "65a29da565be56166876e64d69abc7548815c165645ee7f3c17d1dcb0b2566b0",
+      "installed_sha256": "65a29da565be56166876e64d69abc7548815c165645ee7f3c17d1dcb0b2566b0"
+    },
+    "scripts/pact/discover.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/discover.py",
+      "source_sha256": "34db59c407e4b24ad558938bcbb508af135978aa6206c81e5795a28aa1147284",
+      "installed_sha256": "34db59c407e4b24ad558938bcbb508af135978aa6206c81e5795a28aa1147284"
+    },
+    "scripts/pact/distribution.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/distribution.py",
+      "source_sha256": "4270334929a2e635d4ef71811d552f48d4653673585ad56e1066d6156908b90f",
+      "installed_sha256": "4270334929a2e635d4ef71811d552f48d4653673585ad56e1066d6156908b90f"
+    },
+    "scripts/pact/doctor.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/doctor.py",
+      "source_sha256": "a4e230028d58239d34b0404449acf3b9de84af0e87150774033e8adeb6538fb9",
+      "installed_sha256": "a4e230028d58239d34b0404449acf3b9de84af0e87150774033e8adeb6538fb9"
+    },
+    "scripts/pact/eval.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/eval.py",
+      "source_sha256": "aa788076de11c560457b01991ee6ed47b81d022841d852321649f92ef35ec216",
+      "installed_sha256": "aa788076de11c560457b01991ee6ed47b81d022841d852321649f92ef35ec216"
+    },
+    "scripts/pact/evidence.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/evidence.py",
+      "source_sha256": "fc1cb70a5b112daf97f39f1a7b457b56dece4ce77554b68eb5c38ab96cb4b38e",
+      "installed_sha256": "fc1cb70a5b112daf97f39f1a7b457b56dece4ce77554b68eb5c38ab96cb4b38e"
+    },
+    "scripts/pact/explain.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/explain.py",
+      "source_sha256": "e300519f6e19465be38bfd0ba91fa5777765570860248b8e1b9b049d832168b5",
+      "installed_sha256": "e300519f6e19465be38bfd0ba91fa5777765570860248b8e1b9b049d832168b5"
+    },
+    "scripts/pact/fitness.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/fitness.py",
+      "source_sha256": "a272d83a4ab7df4172669edf2a49a1dadf67fad049629952c36b8aa89b7b15b0",
+      "installed_sha256": "a272d83a4ab7df4172669edf2a49a1dadf67fad049629952c36b8aa89b7b15b0"
+    },
+    "scripts/pact/formats.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/formats.py",
+      "source_sha256": "7450829e32447afb218e776186349b3bf7d718eed7e7f585004425fa9ff53aab",
+      "installed_sha256": "7450829e32447afb218e776186349b3bf7d718eed7e7f585004425fa9ff53aab"
+    },
+    "scripts/pact/impact.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/impact.py",
+      "source_sha256": "e887389239d762d8cdd4db41d4d7749689213c337678bef9ad4de028c79f26c5",
+      "installed_sha256": "e887389239d762d8cdd4db41d4d7749689213c337678bef9ad4de028c79f26c5"
+    },
+    "scripts/pact/init.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/init.py",
+      "source_sha256": "069c6b589a5d672946252ac47eced86ee0bc5396eb43c0e1a8faf194015c8781",
+      "installed_sha256": "069c6b589a5d672946252ac47eced86ee0bc5396eb43c0e1a8faf194015c8781"
+    },
+    "scripts/pact/inspect_project.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/inspect_project.py",
+      "source_sha256": "557fd5221bc5b09248c06dfe220bfb1fef3a447bf53fb290d5aaf441f3888126",
+      "installed_sha256": "557fd5221bc5b09248c06dfe220bfb1fef3a447bf53fb290d5aaf441f3888126"
+    },
+    "scripts/pact/map.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/map.py",
+      "source_sha256": "916689a12ddb2148ec55850d1592c0c8ac6ee928c56af7bee2ad5b593ea17838",
+      "installed_sha256": "916689a12ddb2148ec55850d1592c0c8ac6ee928c56af7bee2ad5b593ea17838"
+    },
+    "scripts/pact/owner.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/owner.py",
+      "source_sha256": "206d6b90dd7c6cc2f755abf18c2e5a104ff1ea13783d399f73718d60a60ec94e",
+      "installed_sha256": "206d6b90dd7c6cc2f755abf18c2e5a104ff1ea13783d399f73718d60a60ec94e"
+    },
+    "scripts/pact/pact.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/pact.py",
+      "source_sha256": "1160c34c53f8adb2b28e2ff2f3e5b185d605fcfde3dbe9f3744330241600b3e4",
+      "installed_sha256": "1160c34c53f8adb2b28e2ff2f3e5b185d605fcfde3dbe9f3744330241600b3e4"
+    },
+    "scripts/pact/parse_cache.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/parse_cache.py",
+      "source_sha256": "6e14d797d6134f6effedac10538927c22deea133ee50b330b73bff92cdf42b4f",
+      "installed_sha256": "6e14d797d6134f6effedac10538927c22deea133ee50b330b73bff92cdf42b4f"
+    },
+    "scripts/pact/readiness.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/readiness.py",
+      "source_sha256": "5b0e4ad791bdb604e67ce953ff0ad3a7dcc61832c781dbf27703f4b87c0f9b30",
+      "installed_sha256": "5b0e4ad791bdb604e67ce953ff0ad3a7dcc61832c781dbf27703f4b87c0f9b30"
+    },
+    "scripts/pact/report.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/report.py",
+      "source_sha256": "312afe25e6aacfda729676af14a099a6b1ed774d91376492e12673b7e5bf1360",
+      "installed_sha256": "312afe25e6aacfda729676af14a099a6b1ed774d91376492e12673b7e5bf1360"
+    },
+    "scripts/pact/repository_files.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/repository_files.py",
+      "source_sha256": "66b9089bf03f312a669de73c7740384da378501b5d1d755255f17cdc1d54dd7e",
+      "installed_sha256": "66b9089bf03f312a669de73c7740384da378501b5d1d755255f17cdc1d54dd7e"
+    },
+    "scripts/pact/risk.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/risk.py",
+      "source_sha256": "813a308f19f5705e570211c8677b832f02e74e5079abef74957567dbfd494d58",
+      "installed_sha256": "813a308f19f5705e570211c8677b832f02e74e5079abef74957567dbfd494d58"
+    },
+    "scripts/pact/run.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/run.py",
+      "source_sha256": "44539feb08486b7f516f6850512a5d80148974f8e3dcdcfc5943531d47ac1a69",
+      "installed_sha256": "44539feb08486b7f516f6850512a5d80148974f8e3dcdcfc5943531d47ac1a69"
+    },
+    "scripts/pact/schema_lint.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/schema_lint.py",
+      "source_sha256": "a54690c64c69c675ffc9d0c7261a477d58ded7ff10341378d9d1b7481d5acd28",
+      "installed_sha256": "a54690c64c69c675ffc9d0c7261a477d58ded7ff10341378d9d1b7481d5acd28"
+    },
+    "scripts/pact/schema_validate.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/schema_validate.py",
+      "source_sha256": "01e306e94e72e74203a4ebcea96e4065bff148e6ec01eeb794d73732ef67543a",
+      "installed_sha256": "01e306e94e72e74203a4ebcea96e4065bff148e6ec01eeb794d73732ef67543a"
+    },
+    "scripts/pact/security.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/security.py",
+      "source_sha256": "e160bb25b160793797e2856b2d65dee3613d27d903e886a21d730a26967311a9",
+      "installed_sha256": "e160bb25b160793797e2856b2d65dee3613d27d903e886a21d730a26967311a9"
+    },
+    "scripts/pact/status.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/status.py",
+      "source_sha256": "8a34a86efbe6af8205231ae63aa17c07d287556339b8ccc2f8db9b0f7a8220d9",
+      "installed_sha256": "8a34a86efbe6af8205231ae63aa17c07d287556339b8ccc2f8db9b0f7a8220d9"
+    },
+    "scripts/pact/task.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/task.py",
+      "source_sha256": "42695b89cd7627c2a7d49bd402f7f1166a82857121f7f87c9843163073b6cf01",
+      "installed_sha256": "42695b89cd7627c2a7d49bd402f7f1166a82857121f7f87c9843163073b6cf01"
+    },
+    "scripts/pact/task_contract.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/task_contract.py",
+      "source_sha256": "125c7f37345fb105185df3f687d634eef5166290714eff1168052dc0cc5a029a",
+      "installed_sha256": "125c7f37345fb105185df3f687d634eef5166290714eff1168052dc0cc5a029a"
+    },
+    "scripts/pact/upgrade.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/upgrade.py",
+      "source_sha256": "fc66fab1d754da770866cdae650c4f4791d8693f333a415fc4110259864a359e",
+      "installed_sha256": "fc66fab1d754da770866cdae650c4f4791d8693f333a415fc4110259864a359e"
+    },
+    "scripts/pact/version.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/version.py",
+      "source_sha256": "434360115554c84121d941b9a01af1b5fe75308a36dc5dac6dfe524d54e3bf83",
+      "installed_sha256": "434360115554c84121d941b9a01af1b5fe75308a36dc5dac6dfe524d54e3bf83"
+    },
+    "scripts/pact/workflow_lint.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/workflow_lint.py",
+      "source_sha256": "1f31de85cc1cb41451523e25b9c4bdb75fa961e70376bcf583ad0a3b3732913e",
+      "installed_sha256": "1f31de85cc1cb41451523e25b9c4bdb75fa961e70376bcf583ad0a3b3732913e"
+    },
+    "scripts/pact/workspace.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/workspace.py",
+      "source_sha256": "e78ec1b70763e52754ef3f5a148d141a028f6e1588f46304edd5704cc80dff9e",
+      "installed_sha256": "e78ec1b70763e52754ef3f5a148d141a028f6e1588f46304edd5704cc80dff9e"
+    },
+    ".pact/config.toml": {
+      "management": "seed",
+      "source_path": ".pact/config.example.toml",
+      "source_sha256": "39ccbb01df00db6fb8074bc8c4778a62f9116c667626c579d94d0434fc56bd16",
+      "installed_sha256": "39ccbb01df00db6fb8074bc8c4778a62f9116c667626c579d94d0434fc56bd16"
+    },
+    ".pact/baseline.toml": {
+      "management": "seed",
+      "source_path": ".pact/baseline.example.toml",
+      "source_sha256": "f287c01c2e4043683c25705c874e8180bf1a0882f141cd401ef3db608818fea2",
+      "installed_sha256": "f287c01c2e4043683c25705c874e8180bf1a0882f141cd401ef3db608818fea2"
+    },
+    ".pact/fitness.toml": {
+      "management": "seed",
+      "source_path": ".pact/fitness.example.toml",
+      "source_sha256": "26cb44e6bcbfd57e007b8dbf399a1127b6f728544e141d3c2a45b0073f65280a",
+      "installed_sha256": "26cb44e6bcbfd57e007b8dbf399a1127b6f728544e141d3c2a45b0073f65280a"
+    },
+    "AGENTS.md": {
+      "management": "seed",
+      "source_path": null,
+      "source_sha256": null,
+      "installed_sha256": "06bf97a5df2678dba8d4ccb14e8a86ae9cc809767e4da0ba84103bef3cbbeef1"
+    },
+    ".gitignore": {
+      "management": "seed",
+      "source_path": null,
+      "source_sha256": null,
+      "installed_sha256": "6c2f6d0b6d538a190e4787e79de5ced099f7170f78bbb0b0897b990ffd18df0f"
+    }
+  }
+}

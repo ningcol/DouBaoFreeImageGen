@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pact.local/schema/artifact.schema.json",
+  "title": "PACT Artifact Metadata",
+  "type": "object",
+  "required": ["pact"],
+  "additionalProperties": true,
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+    }
+  },
+  "properties": {
+    "pact": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["domain", "rule", "decision", "change", "drift", "architecture"]
+        },
+        "id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "status": {
+          "type": "string"
+        },
+        "owners": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "domains": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^DOMAIN-[A-Z0-9]+(?:-[A-Z0-9]+)*$" },
+          "uniqueItems": true
+        },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "related": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stableId" },
+          "uniqueItems": true
+        },
+        "verification": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "supersedes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stableId" },
+          "uniqueItems": true
+        },
+        "superseded_by": {
+          "oneOf": [
+            { "$ref": "#/$defs/stableId" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}
