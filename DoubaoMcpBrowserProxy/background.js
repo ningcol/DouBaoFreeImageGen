@@ -40,7 +40,7 @@ chrome.webNavigation.onCommitted.addListener(
 
 // 安装或更新时清除cookie
 chrome.runtime.onInstalled.addListener(clearAllCookies);
-const streamRequestIds = new Set();
+const streamRequests = new Map();
 
 function streamRequestKey(source, requestId) {
   return `${source.tabId}:${requestId}`;
@@ -57,7 +57,11 @@ chrome.debugger.onEvent.addListener(async (source, method, params) => {
     if (contentType && contentType.includes("text/event-stream")) {
       console.log("EventStream Response Headers Received:", response);
       console.log("Request ID for EventStream:", requestId);
-      streamRequestIds.add(streamRequestKey(source, requestId));
+      const requestKey = streamRequestKey(source, requestId);
+      streamRequests.set(
+        requestKey,
+        busyTabs.has(source.tabId) ? busyTabs.get(source.tabId) : null
+      );
     }
   }
   // 如果你想捕获 EventSource 发送的单个消息（SSE 事件）
@@ -66,7 +70,8 @@ chrome.debugger.onEvent.addListener(async (source, method, params) => {
     const { requestId } = params;
     const requestKey = streamRequestKey(source, requestId);
     // 判断请求的id是否被记录，是stream类型
-    if (streamRequestIds.has(requestKey)) {
+    if (streamRequests.has(requestKey)) {
+      const mcpRequestId = streamRequests.get(requestKey);
       try {
         // 使用 Network.getResponseBody 获取响应体
         // source 是 debuggee target，可以直接传递
@@ -140,13 +145,27 @@ chrome.debugger.onEvent.addListener(async (source, method, params) => {
           console.log('Total images found:', imageUrls.length);
           console.log('All image URLs:', imageUrls);
           
-          // 将结果发回产生该网络请求的准确 Tab，避免多 Tab 并发时串任务
-          if (source.tabId) {
-            console.log('发送图片清单到 Tab', source.tabId);
+          // 只把结果交给产生该网络流时对应的 MCP 任务。
+          // 如果 Tab 已经被复用于新任务，丢弃旧流，避免跨任务串结果。
+          const activeRequestId = busyTabs.has(source.tabId)
+            ? busyTabs.get(source.tabId)
+            : undefined;
+          if (source.tabId && activeRequestId === mcpRequestId) {
+            console.log('发送图片清单到 Tab', source.tabId, 'request', mcpRequestId);
             chrome.tabs.sendMessage(source.tabId, {
               type: 'IMAGE_URLS',
+              requestId: mcpRequestId,
               urls: imageUrls
             });
+          } else {
+            console.warn(
+              '[EventStream] Ignoring stale result for tab',
+              source.tabId,
+              'request',
+              mcpRequestId,
+              'active',
+              activeRequestId
+            );
           }
         }
 
@@ -165,7 +184,7 @@ chrome.debugger.onEvent.addListener(async (source, method, params) => {
         // - If the stream is still actively pushing data and not yet "finished" in some sense,
         //   getResponseBody might give you what's buffered so far.
       }
-      streamRequestIds.delete(requestKey);
+      streamRequests.delete(requestKey);
     }
   }
 });
@@ -315,7 +334,9 @@ function connectWebSocket() {
       ws.onclose = (event) => {
         console.log(`[WebSocket] Disconnected (code: ${event.code}, reason: ${event.reason}).`);
         ws = null;
-        busyTabs.clear();
+        // Keep busyTabs intact across reconnects. The page may still be
+        // generating an old request; advertising it as free would allow
+        // duplicate work on the same tab.
         if (!event.wasClean) {
           scheduleReconnect();
         }
@@ -390,39 +411,67 @@ function attachDebuggerToTab(tabId) {
   }
 }
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (
-    changeInfo.status === "complete" &&
-    tab.url?.startsWith("https://www.doubao.com")
-  ) {
-    const wasNew = !doubaoTabIds.has(tabId);
-    doubaoTabIds.add(tabId);
-    connectWebSocket();
-    attachDebuggerToTab(tabId);
-    if (wasNew) {
-      console.log(`[Tabs] Doubao tab ready: ${tabId} (total=${doubaoTabIds.size})`);
-    }
-    sendClientState();
-  }
-});
+function isDoubaoUrl(url) {
+  return typeof url === 'string' && url.startsWith('https://www.doubao.com');
+}
 
-chrome.tabs.onRemoved.addListener((tabId) => {
+function removeDoubaoTab(tabId, reason) {
+  const wasKnown = doubaoTabIds.delete(tabId);
   const requestId = busyTabs.get(tabId);
   if (requestId !== undefined) {
     sendWebSocketMessage({
       type: 'error',
       request_id: requestId,
-      message: 'Doubao tab closed while processing the request'
+      message: reason || 'Doubao tab became unavailable while processing the request'
     });
   }
-
   busyTabs.delete(tabId);
-  doubaoTabIds.delete(tabId);
-  sendClientState();
+
+  if (wasKnown || requestId !== undefined) {
+    sendClientState();
+  }
 
   try {
     chrome.debugger.detach({ tabId });
   } catch (error) {
     console.error("Debugger detach error:", error);
+  }
+}
+
+function registerDoubaoTab(tabId) {
+  const wasNew = !doubaoTabIds.has(tabId);
+  doubaoTabIds.add(tabId);
+  connectWebSocket();
+  attachDebuggerToTab(tabId);
+  if (wasNew) {
+    console.log(`[Tabs] Doubao tab ready: ${tabId} (total=${doubaoTabIds.size})`);
+  }
+  sendClientState();
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  const currentUrl = changeInfo.url || tab.url;
+
+  if (doubaoTabIds.has(tabId) && currentUrl && !isDoubaoUrl(currentUrl)) {
+    removeDoubaoTab(tabId, 'Doubao tab navigated away while processing the request');
+    return;
+  }
+
+  if (changeInfo.status === "complete" && isDoubaoUrl(tab.url)) {
+    registerDoubaoTab(tabId);
+  }
+});
+
+chrome.tabs.onRemoved.addListener((tabId) => {
+  removeDoubaoTab(tabId, 'Doubao tab closed while processing the request');
+});
+
+// MV3 service workers can restart while tabs stay open. Rebuild the pool from
+// existing Doubao tabs so a background restart does not silently drop capacity.
+chrome.tabs.query({ url: ["https://www.doubao.com/*"] }, (tabs) => {
+  for (const tab of tabs || []) {
+    if (tab.id !== undefined && isDoubaoUrl(tab.url)) {
+      registerDoubaoTab(tab.id);
+    }
   }
 });
