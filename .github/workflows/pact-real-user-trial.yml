@@ -27,7 +27,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="326be1bf1bab1d5803932ea69d725f78a4fb7159"
+          PACT_REF="296063f8639fe27c47a21035e0b41bff22dbd9b4"
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          manifest = pathlib.Path(".pact/install.json")
+          if manifest.is_file():
+              data = json.loads(manifest.read_text(encoding="utf-8"))
+              files = data.get("files", {})
+              framework = [p for p, r in files.items() if r.get("management") == "framework"]
+              seed = [p for p, r in files.items() if r.get("management") == "seed"]
+              runtime = [p for p in framework if p.startswith("scripts/pact/")]
+              print(
+                  "PACT_INSTALL_BEFORE "
+                  f"managed={len(files)} framework={len(framework)} "
+                  f"seed={len(seed)} scripts_pact={len(runtime)}"
+              )
+          PY
 
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
@@ -48,6 +66,27 @@ jobs:
 
           git config user.name "PACT Real User Trial"
           git config user.email "pact-trial@users.noreply.github.com"
+          git add -A
+          python - <<'PY'
+          import json
+          import pathlib
+
+          data = json.loads(
+              pathlib.Path(".pact/install.json").read_text(encoding="utf-8")
+          )
+          files = data.get("files", {})
+          framework = [p for p, r in files.items() if r.get("management") == "framework"]
+          seed = [p for p, r in files.items() if r.get("management") == "seed"]
+          runtime = [p for p in framework if p.startswith("scripts/pact/")]
+          compact = ".pact/pact.pyz" in framework
+          print(
+              "PACT_INSTALL_AFTER "
+              f"managed={len(files)} framework={len(framework)} "
+              f"seed={len(seed)} scripts_pact={len(runtime)} compact={compact}"
+          )
+          print("PACT_RUNTIME_PATHS", *sorted(runtime), sep="\n")
+          PY
+
           git add -A
           if git diff --cached --quiet; then
             echo "PACT is already at the pinned runtime."
