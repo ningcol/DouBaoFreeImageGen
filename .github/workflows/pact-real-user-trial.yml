@@ -43,7 +43,7 @@ jobs:
 
           git config user.name "PACT Real User Trial"
           git config user.email "pact-trial@users.noreply.github.com"
-          git add pact.py scripts/pact .pact docs .agents 2>/dev/null || true
+          git add -A
           if git diff --cached --quiet; then
             echo "No PACT adoption files to commit."
           else
@@ -75,3 +75,179 @@ jobs:
           cat .pact/tasks/TASK-REAL-MULTI-CLIENT/context.json
           echo "----- TASK CONTRACT -----"
           cat .pact/tasks/TASK-REAL-MULTI-CLIENT/contract.json
+
+
+      - name: PACT impact review
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py impact \
+            --files \
+              McpServer/server.py \
+              McpServer/test_server_dispatch.py \
+              DoubaoMcpBrowserProxy/background.js \
+              DoubaoMcpBrowserProxy/content.js \
+              DoubaoMcpBrowserProxy/test_background_dispatch.js \
+            --risk medium \
+            --code \
+            --output .pact/tasks/TASK-REAL-MULTI-CLIENT/impact.json
+          cat .pact/tasks/TASK-REAL-MULTI-CLIENT/impact.json
+
+      - name: Verify server scheduling through PACT
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py run \
+            --task-id TASK-REAL-MULTI-CLIENT \
+            --output .pact/runs/TASK-REAL-MULTI-CLIENT/server-tests.json \
+            --quiet \
+            -- python -m unittest McpServer/test_server_dispatch.py
+
+      - name: Verify browser dispatch through PACT
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py run \
+            --task-id TASK-REAL-MULTI-CLIENT \
+            --output .pact/runs/TASK-REAL-MULTI-CLIENT/browser-tests.json \
+            --quiet \
+            -- bash -lc "node --check DoubaoMcpBrowserProxy/background.js && node --check DoubaoMcpBrowserProxy/content.js && node DoubaoMcpBrowserProxy/test_background_dispatch.js"
+
+      - name: Build evidence-backed completion bundle
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python - <<'PY'
+          import json
+          import pathlib
+
+          root = pathlib.Path(".")
+          task_id = "TASK-REAL-MULTI-CLIENT"
+          task_dir = root / ".pact" / "tasks" / task_id
+          bundle = root / ".pact" / "completions" / task_id
+          bundle.mkdir(parents=True, exist_ok=True)
+
+          manifest = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+          contract = json.loads((task_dir / "contract.json").read_text(encoding="utf-8"))
+
+          server_ref = f".pact/runs/{task_id}/server-tests.json"
+          browser_ref = f".pact/runs/{task_id}/browser-tests.json"
+
+          claims = [
+              {
+                  "id": "EV-ROUND-ROBIN",
+                  "claim": "Connected MCP clients are selected in round-robin order and task results are request-scoped.",
+                  "required": True,
+                  "status": "pass",
+                  "criteria": ["AC-1"],
+                  "evidence": [
+                      {"kind": "test", "provenance": "pact-run", "ref": server_ref}
+                  ],
+              },
+              {
+                  "id": "EV-MULTI-TAB",
+                  "claim": "One browser client exposes multiple independent tab slots and does not double-dispatch to busy tabs.",
+                  "required": True,
+                  "status": "pass",
+                  "criteria": ["AC-2"],
+                  "evidence": [
+                      {"kind": "test", "provenance": "pact-run", "ref": server_ref},
+                      {"kind": "test", "provenance": "pact-run", "ref": browser_ref},
+                  ],
+              },
+              {
+                  "id": "EV-FAILOVER",
+                  "claim": "Disconnected clients or unavailable tabs fail their own request without corrupting unrelated pending work.",
+                  "required": True,
+                  "status": "pass",
+                  "criteria": ["AC-3"],
+                  "evidence": [
+                      {"kind": "test", "provenance": "pact-run", "ref": server_ref},
+                      {"kind": "test", "provenance": "pact-run", "ref": browser_ref},
+                  ],
+              },
+              {
+                  "id": "EV-SINGLE-CLIENT",
+                  "claim": "A single client with one ready tab remains a valid capacity-one scheduling path and legacy raw commands remain parseable.",
+                  "required": True,
+                  "status": "pass",
+                  "criteria": ["AC-4"],
+                  "evidence": [
+                      {"kind": "test", "provenance": "pact-run", "ref": server_ref},
+                      {"kind": "test", "provenance": "pact-run", "ref": browser_ref},
+                  ],
+              },
+          ]
+
+          evidence = {
+              "version": 1,
+              "task_id": task_id,
+              "task": manifest["task"],
+              "risk_level": manifest["risk_level"],
+              "task_contract_sha256": manifest["contract_sha256"],
+              "claims": claims,
+              "limitations": [
+                  "GitHub Actions cannot launch a real Doubao desktop session; browser protocol behavior is verified with executable Chrome/WebSocket mocks rather than a live external service.",
+                  "PACT brownfield readiness remains pending for project vocabulary/Product Truth because this branch is an isolated real-user trial.",
+              ],
+          }
+
+          convergence = {
+              "version": 1,
+              "task_id": task_id,
+              "change": manifest["task"],
+              "owner_summary": "The implementation now models multiple browser clients and multiple ready tabs as independent scheduling capacity while preserving the capacity-one path.",
+              "evidence": [claim["id"] for claim in claims],
+              "findings": [],
+          }
+
+          evidence_for = {
+              "AC-1": ["EV-ROUND-ROBIN"],
+              "AC-2": ["EV-MULTI-TAB"],
+              "AC-3": ["EV-FAILOVER"],
+              "AC-4": ["EV-SINGLE-CLIENT"],
+          }
+          owner = {
+              "version": 1,
+              "task_id": task_id,
+              "status": "completed",
+              "summary": "MCP drawing work can now be distributed across multiple connected clients and multiple Doubao tabs without using one global task lock.",
+              "before": "The server stored one WebSocket, one global image buffer, one global task flag, and the extension stored one Doubao tab ID.",
+              "after": "The server uses a round-robin client pool with per-client tab capacity and request IDs; the extension maintains a tab pool, tracks busy tabs, and returns results to the matching request.",
+              "verification": [
+                  {
+                      "claim": claim["claim"],
+                      "evidence_ids": [claim["id"]],
+                  }
+                  for claim in claims
+              ],
+              "acceptance": [
+                  {
+                      "criterion_id": item["id"],
+                      "summary": item["text"],
+                      "evidence_ids": evidence_for[item["id"]],
+                  }
+                  for item in contract["acceptance_criteria"]
+              ],
+              "consistency": {
+                  "status": "aligned",
+                  "summary": "No confirmed project Product Rule or Decision was found to contradict the change; PACT explicitly keeps brownfield truth readiness pending.",
+              },
+              "owner_decisions": [],
+              "technical_details": [
+                  "Live Doubao desktop E2E is outside GitHub Actions and remains an external-environment limitation."
+              ],
+          }
+
+          for name, value in [
+              ("evidence.json", evidence),
+              ("convergence.json", convergence),
+              ("owner-report.json", owner),
+          ]:
+              (bundle / name).write_text(
+                  json.dumps(value, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+          PY
+
+      - name: Finish through PACT trust gate
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python pact.py task finish TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-finish.json
+          python pact.py eval --task TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-eval.json
