@@ -138,6 +138,9 @@ assert.deepStrictEqual(
 );
 assert.strictEqual(sentToTabs[0].message.requestId, "req-1");
 assert.strictEqual(sentToTabs[1].message.requestId, "req-2");
+const busyState = [...wsMessages].reverse().find((item) => item.type === "clientState");
+assert.ok(busyState, "dispatch should immediately publish updated client capacity");
+assert.strictEqual(busyState.availableTabs, 0);
 
 dispatch("req-3", "prompt-three");
 assert.strictEqual(sentToTabs.length, 2, "busy tabs must not receive another task");
@@ -243,5 +246,22 @@ Promise.resolve(
     tabMessagesBeforeStaleStream,
     "late EventStream output must not be delivered to a newer task"
   );
+
+  debuggerEventListener(
+    { tabId: 101 },
+    "Network.responseReceived",
+    {
+      requestId: "network-failed",
+      response: { headers: { "content-type": "text/event-stream" } },
+    }
+  );
+  debuggerEventListener(
+    { tabId: 101 },
+    "Network.loadingFailed",
+    { requestId: "network-failed" }
+  );
+  const streamState = vm.runInContext("streamRequests.size", context);
+  assert.strictEqual(streamState, 0, "failed network streams must be removed");
+
   console.log("background dispatch tests passed");
 });
