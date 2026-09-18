@@ -59,8 +59,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // 更新下载按钮状态
         updateDownloadButton();
 
-        // 直接发送并清理
-        performSendAndCleanup();
+        // 使用网络流开始时冻结的 requestId，避免旧流晚到后串到新任务。
+        performSendAndCleanup(message.requestId ?? activeRequestId);
     } else if (message.type === 'COMMAND_FROM_SERVER' && message.data) {
         activeRequestId = message.requestId || null;
         console.log(
@@ -97,18 +97,22 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 });
 
 // --- Image Collection & Cleanup ---
-function performSendAndCleanup() {
+function performSendAndCleanup(completedRequestId = activeRequestId) {
     console.log("[Cleanup] Image discovery settled. Initiating send and cleanup...");
     imageCollectionTimer = null;
 
-    // WebSocket逻辑已移除，这里可以通过chrome.runtime.sendMessage或其他方式与background通信
-    const completedRequestId = activeRequestId;
-    if (foundImageUrls.length > 0) {
-        console.log(`[Cleanup] Sending ${foundImageUrls.length} collected image URLs.`);
+    // Snapshot and clear request-scoped image state before notifying background.
+    // Background can immediately dispatch the next task after this message.
+    const urlsToSend = [...foundImageUrls];
+    foundImageUrls.length = 0;
+    processedUrls.clear();
+
+    if (urlsToSend.length > 0) {
+        console.log(`[Cleanup] Sending ${urlsToSend.length} collected image URLs.`);
         chrome.runtime.sendMessage({
             type: 'COLLECTED_IMAGE_URLS',
             requestId: completedRequestId,
-            urls: [...foundImageUrls]
+            urls: urlsToSend
         });
     } else {
         console.log("[Cleanup] No image URLs were collected during this session. Sending empty list.");
@@ -118,7 +122,9 @@ function performSendAndCleanup() {
             urls: []
         });
     }
-    activeRequestId = null;
+    if (activeRequestId === completedRequestId) {
+        activeRequestId = null;
+    }
 
     setTimeout(() => {
         console.log("[Cleanup] Initiating storage cleanup after send delay...");
@@ -137,9 +143,7 @@ function performSendAndCleanup() {
             console.error("[Cleanup] Error clearing sessionStorage:", e);
         }
 
-        foundImageUrls.length = 0;
-        processedUrls.clear();
-        console.log("[Cleanup] Internal image lists cleared.");
+        console.log("[Cleanup] Request-scoped image lists already cleared.");
 
         if (shouldAutoReload) {
             console.log("[Cleanup] Auto reload is enabled. Reloading page...");
@@ -172,6 +176,9 @@ async function handleReceivedCommand(commandText, requestId = null) {
             requestId,
             message: 'Chat input textarea element not found'
         });
+        if (activeRequestId === requestId) {
+            activeRequestId = null;
+        }
         return;
     }
 
@@ -231,6 +238,9 @@ async function handleReceivedCommand(commandText, requestId = null) {
             message: 'Input simulation failed',
             error: e.message
         });
+        if (activeRequestId === requestId) {
+            activeRequestId = null;
+        }
     }
 }
 
