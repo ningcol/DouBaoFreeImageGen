@@ -23,31 +23,36 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Adopt pinned PACT runtime if needed
+      - name: Adopt or upgrade pinned PACT runtime
         shell: bash
         run: |
           set -euo pipefail
-          if [ -f pact.py ]; then
-            echo "PACT is already adopted."
-            exit 0
-          fi
+          PACT_REF="326be1bf1bab1d5803932ea69d725f78a4fb7159"
 
           curl -fsSLo /tmp/pact-bootstrap.py \
-            https://raw.githubusercontent.com/ningcol/PACT/1fcd49d58a590e63d58baac905b2eccb3ab9162c/bootstrap.py
+            "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
-          python /tmp/pact-bootstrap.py init \
-            --target . \
-            --repo ningcol/PACT \
-            --ref 1fcd49d58a590e63d58baac905b2eccb3ab9162c \
-            --apply
+          if [ -f pact.py ]; then
+            python /tmp/pact-bootstrap.py upgrade \
+              --target . \
+              --repo ningcol/PACT \
+              --ref "${PACT_REF}" \
+              --apply
+          else
+            python /tmp/pact-bootstrap.py init \
+              --target . \
+              --repo ningcol/PACT \
+              --ref "${PACT_REF}" \
+              --apply
+          fi
 
           git config user.name "PACT Real User Trial"
           git config user.email "pact-trial@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
-            echo "No PACT adoption files to commit."
+            echo "PACT is already at the pinned runtime."
           else
-            git commit -m "test: adopt PACT for real-user trial"
+            git commit -m "test: upgrade PACT runtime for real-user trial"
             git push origin HEAD:pact-real-user-test/multi-client-round-robin
           fi
 
@@ -247,6 +252,102 @@ jobs:
               )
           PY
 
+      - name: Prove omitted Convergence coverage is blocked
+        if: ${{ hashFiles('pact.py') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python pact.py task finish TASK-REAL-MULTI-CLIENT --json > /tmp/pact-expected-convergence-failure.json
+          rc=$?
+          set -e
+
+          cat /tmp/pact-expected-convergence-failure.json
+          if [ "${rc}" -eq 0 ]; then
+            echo "Expected missing Convergence coverage to block completion" >&2
+            exit 1
+          fi
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          result = json.loads(
+              pathlib.Path("/tmp/pact-expected-convergence-failure.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          errors = "\n".join(result.get("errors", []))
+          if "Task Context artifact missing from Convergence coverage" not in errors:
+              raise SystemExit(
+                  "completion failed, but not because Context coverage was missing"
+              )
+          PY
+
+          python pact.py eval --task TASK-REAL-MULTI-CLIENT --json > /tmp/pact-after-coverage-block.json
+          cat /tmp/pact-after-coverage-block.json
+          python - <<'PY'
+          import json
+          import pathlib
+
+          observed = json.loads(
+              pathlib.Path("/tmp/pact-after-coverage-block.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          if observed["completion"]["convergence_coverage_blocks"] < 1:
+              raise SystemExit("expected convergence_coverage_blocks >= 1")
+          if observed["completion"]["final_complete"]:
+              raise SystemExit("task must remain incomplete after blocked convergence")
+          PY
+
+      - name: Add explicit Context-bound Convergence coverage
+        if: ${{ hashFiles('pact.py') != '' }}
+        run: |
+          python - <<'PY'
+          import json
+          import pathlib
+
+          task_id = "TASK-REAL-MULTI-CLIENT"
+          task_dir = pathlib.Path(".pact/tasks") / task_id
+          bundle = pathlib.Path(".pact/completions") / task_id
+
+          manifest = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+          context = json.loads((task_dir / "context.json").read_text(encoding="utf-8"))
+          convergence_path = bundle / "convergence.json"
+          convergence = json.loads(convergence_path.read_text(encoding="utf-8"))
+
+          coverage = []
+          for item in context.get("artifacts", []):
+              path = item["path"]
+              if path == "README.md":
+                  disposition = "aligned"
+                  rationale = (
+                      "README now documents multi-client / multi-tab concurrent "
+                      "dispatch and no longer claims single-task-only behavior."
+                  )
+              else:
+                  disposition = "not-applicable"
+                  rationale = (
+                      "Retrieved project knowledge was reviewed and is not changed "
+                      "by this isolated scheduling feature."
+                  )
+              coverage.append(
+                  {
+                      "path": path,
+                      "disposition": disposition,
+                      "rationale": rationale,
+                  }
+              )
+
+          convergence["context_sha256"] = manifest["context_sha256"]
+          convergence["coverage"] = coverage
+          convergence_path.write_text(
+              json.dumps(convergence, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
       - name: Finish through PACT trust gate
         if: ${{ hashFiles('pact.py') != '' }}
         shell: bash
@@ -254,3 +355,24 @@ jobs:
           set -euo pipefail
           python pact.py task finish TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-finish.json
           python pact.py eval --task TASK-REAL-MULTI-CLIENT --json | tee /tmp/pact-eval.json
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          finish = json.loads(pathlib.Path("/tmp/pact-finish.json").read_text(encoding="utf-8"))
+          observed = json.loads(pathlib.Path("/tmp/pact-eval.json").read_text(encoding="utf-8"))
+
+          if not finish.get("complete"):
+              raise SystemExit("final PACT completion must pass")
+          if finish["convergence_coverage"]["covered_artifacts"] != finish["convergence_coverage"]["required_artifacts"]:
+              raise SystemExit("all Context knowledge artifacts must be convergence-covered")
+          if observed["completion"]["attempts"] != 2:
+              raise SystemExit("expected one blocked attempt plus one successful attempt")
+          if observed["completion"]["failed_attempts"] != 1:
+              raise SystemExit("expected exactly one failed completion attempt")
+          if observed["completion"]["convergence_coverage_blocks"] != 1:
+              raise SystemExit("expected exactly one Convergence coverage block")
+          if not observed["completion"]["final_complete"]:
+              raise SystemExit("task must end completed")
+          PY
