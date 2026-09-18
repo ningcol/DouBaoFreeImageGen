@@ -74,7 +74,7 @@ Do not fake precision if the number is unavailable.
 PACT can derive facts it already owns without asking the pilot operator to copy them into a scorecard:
 
 ```bash
-python scripts/pact/pact.py eval --task <TASK-ID> --json
+python pact.py eval --task <TASK-ID> --json
 ```
 
 The observation is built from the prepared Task Contract, Context envelope, `pact run` receipts, completion attempts, Evidence, Convergence, and Owner Report when present.
@@ -145,9 +145,9 @@ Example:
 Validate or summarize records with:
 
 ```bash
-python scripts/pact/pact.py eval record.json
+python pact.py eval record.json
 
-python scripts/pact/pact.py eval \
+python pact.py eval \
   baseline-1.json baseline-2.json \
   pact-1.json pact-2.json \
   --summary

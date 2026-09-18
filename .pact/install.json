@@ -35,8 +35,8 @@
     "pact.py": {
       "management": "framework",
       "source_path": "pact.py",
-      "source_sha256": "733e2cb5bda9daaa465468b67c388b88046c9aaf6fd1cd2af11ca39ece602ac8",
-      "installed_sha256": "733e2cb5bda9daaa465468b67c388b88046c9aaf6fd1cd2af11ca39ece602ac8"
+      "source_sha256": "f4adb4e993fecf9337620f783e6eeabab29458368e1e49e6ae75fdcac2dcfc55",
+      "installed_sha256": "f4adb4e993fecf9337620f783e6eeabab29458368e1e49e6ae75fdcac2dcfc55"
     },
     "docs/product/README.md": {
       "management": "framework",
@@ -77,8 +77,8 @@
     "docs/architecture/README.md": {
       "management": "framework",
       "source_path": "docs/architecture/README.md",
-      "source_sha256": "f81c8364782e5f933864dce264c3534130ff1493530da51ada8dfe0bd12451d1",
-      "installed_sha256": "f81c8364782e5f933864dce264c3534130ff1493530da51ada8dfe0bd12451d1"
+      "source_sha256": "ae51ae251c787429ff52461a6baa242468803f938065124660915f46a44321bc",
+      "installed_sha256": "ae51ae251c787429ff52461a6baa242468803f938065124660915f46a44321bc"
     },
     "docs/changes/README.md": {
       "management": "framework",
@@ -143,20 +143,20 @@
     "docs/initialization.md": {
       "management": "framework",
       "source_path": "docs/initialization.md",
-      "source_sha256": "2444dec1fb567a0a4eb4793f67f215d2f62214e03d3761ba93f8088b80685387",
-      "installed_sha256": "2444dec1fb567a0a4eb4793f67f215d2f62214e03d3761ba93f8088b80685387"
+      "source_sha256": "37f0601b1b97fe269833fe2df647ca05e6a42d517be73ee6d7bcb0671de69348",
+      "installed_sha256": "37f0601b1b97fe269833fe2df647ca05e6a42d517be73ee6d7bcb0671de69348"
     },
     "docs/initialization-checklist.md": {
       "management": "framework",
       "source_path": "docs/initialization-checklist.md",
-      "source_sha256": "7cf1c71b82333f911694880eec28e546aae6ce59025511a66e40d6f220cf51b5",
-      "installed_sha256": "7cf1c71b82333f911694880eec28e546aae6ce59025511a66e40d6f220cf51b5"
+      "source_sha256": "246e3e6d2596aec879c829c9aa991626a80a5987662603203779a51d8c023cf6",
+      "installed_sha256": "246e3e6d2596aec879c829c9aa991626a80a5987662603203779a51d8c023cf6"
     },
     "docs/evaluation/pilot-scorecard.md": {
       "management": "framework",
       "source_path": "docs/evaluation/pilot-scorecard.md",
-      "source_sha256": "f71b1e7ed3f84f57ff4f2c8b56f81e17269b4829987f525444329ab5ff10b906",
-      "installed_sha256": "f71b1e7ed3f84f57ff4f2c8b56f81e17269b4829987f525444329ab5ff10b906"
+      "source_sha256": "231360180dbd842e9fe96528d38e5d93e0a53b31fbb12c8442875bc1755970b1",
+      "installed_sha256": "231360180dbd842e9fe96528d38e5d93e0a53b31fbb12c8442875bc1755970b1"
     },
     ".agents/decisions/README.md": {
       "management": "framework",
@@ -320,233 +320,11 @@
       "source_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7",
       "installed_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7"
     },
-    "scripts/pact/README.md": {
-      "management": "framework",
-      "source_path": "scripts/pact/README.md",
-      "source_sha256": "3d22a68d4d89a21e64fba05570cf8a4a987904f885ed46f8296b0ba306f74e1c",
-      "installed_sha256": "3d22a68d4d89a21e64fba05570cf8a4a987904f885ed46f8296b0ba306f74e1c"
-    },
-    "scripts/pact/audit.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/audit.py",
-      "source_sha256": "5b77d9dbcdba9a903e3a972183a5c30c3f4fe9f9375509426495d385b6e3ba3d",
-      "installed_sha256": "5b77d9dbcdba9a903e3a972183a5c30c3f4fe9f9375509426495d385b6e3ba3d"
-    },
-    "scripts/pact/cache.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/cache.py",
-      "source_sha256": "74ca7b43f4829425bae25f092e00b8d0845395ca8ea73d4f6d9622b5ac4d50ab",
-      "installed_sha256": "74ca7b43f4829425bae25f092e00b8d0845395ca8ea73d4f6d9622b5ac4d50ab"
-    },
-    "scripts/pact/check.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/check.py",
-      "source_sha256": "d5e14e943868dd2b9ccc0db3f7c40360500353a386896f092faf4335717a9bed",
-      "installed_sha256": "d5e14e943868dd2b9ccc0db3f7c40360500353a386896f092faf4335717a9bed"
-    },
-    "scripts/pact/code_map.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/code_map.py",
-      "source_sha256": "ee85dc719a5018b5cbdb7e073816ecaf86a1222782ceb886250d803528d0f82d",
-      "installed_sha256": "ee85dc719a5018b5cbdb7e073816ecaf86a1222782ceb886250d803528d0f82d"
-    },
-    "scripts/pact/complete.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/complete.py",
-      "source_sha256": "986cb31e18ffce914b730e1aa66a04ca09c231c686a86a6566ed21cd3fe4152d",
-      "installed_sha256": "986cb31e18ffce914b730e1aa66a04ca09c231c686a86a6566ed21cd3fe4152d"
-    },
-    "scripts/pact/context.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/context.py",
-      "source_sha256": "b683a8b8f26604c069cb5ca49fc98a4cc7a1fb87fb688ab5c4c0e13cd95ca90f",
-      "installed_sha256": "b683a8b8f26604c069cb5ca49fc98a4cc7a1fb87fb688ab5c4c0e13cd95ca90f"
-    },
-    "scripts/pact/converge.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/converge.py",
-      "source_sha256": "eb1755e65712335f7a81e7ac1c2db61691ed4309a979c273080d26bc000e56ab",
-      "installed_sha256": "eb1755e65712335f7a81e7ac1c2db61691ed4309a979c273080d26bc000e56ab"
-    },
-    "scripts/pact/discover.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/discover.py",
-      "source_sha256": "34db59c407e4b24ad558938bcbb508af135978aa6206c81e5795a28aa1147284",
-      "installed_sha256": "34db59c407e4b24ad558938bcbb508af135978aa6206c81e5795a28aa1147284"
-    },
-    "scripts/pact/distribution.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/distribution.py",
-      "source_sha256": "4270334929a2e635d4ef71811d552f48d4653673585ad56e1066d6156908b90f",
-      "installed_sha256": "4270334929a2e635d4ef71811d552f48d4653673585ad56e1066d6156908b90f"
-    },
-    "scripts/pact/doctor.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/doctor.py",
-      "source_sha256": "a4e230028d58239d34b0404449acf3b9de84af0e87150774033e8adeb6538fb9",
-      "installed_sha256": "a4e230028d58239d34b0404449acf3b9de84af0e87150774033e8adeb6538fb9"
-    },
-    "scripts/pact/eval.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/eval.py",
-      "source_sha256": "afaca66c907c4302df8d2493de6434112112362d5f751453fde57f54cb03cb67",
-      "installed_sha256": "afaca66c907c4302df8d2493de6434112112362d5f751453fde57f54cb03cb67"
-    },
-    "scripts/pact/evidence.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/evidence.py",
-      "source_sha256": "fc1cb70a5b112daf97f39f1a7b457b56dece4ce77554b68eb5c38ab96cb4b38e",
-      "installed_sha256": "fc1cb70a5b112daf97f39f1a7b457b56dece4ce77554b68eb5c38ab96cb4b38e"
-    },
-    "scripts/pact/explain.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/explain.py",
-      "source_sha256": "e300519f6e19465be38bfd0ba91fa5777765570860248b8e1b9b049d832168b5",
-      "installed_sha256": "e300519f6e19465be38bfd0ba91fa5777765570860248b8e1b9b049d832168b5"
-    },
-    "scripts/pact/fitness.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/fitness.py",
-      "source_sha256": "a272d83a4ab7df4172669edf2a49a1dadf67fad049629952c36b8aa89b7b15b0",
-      "installed_sha256": "a272d83a4ab7df4172669edf2a49a1dadf67fad049629952c36b8aa89b7b15b0"
-    },
-    "scripts/pact/formats.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/formats.py",
-      "source_sha256": "7450829e32447afb218e776186349b3bf7d718eed7e7f585004425fa9ff53aab",
-      "installed_sha256": "7450829e32447afb218e776186349b3bf7d718eed7e7f585004425fa9ff53aab"
-    },
-    "scripts/pact/impact.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/impact.py",
-      "source_sha256": "e887389239d762d8cdd4db41d4d7749689213c337678bef9ad4de028c79f26c5",
-      "installed_sha256": "e887389239d762d8cdd4db41d4d7749689213c337678bef9ad4de028c79f26c5"
-    },
-    "scripts/pact/init.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/init.py",
-      "source_sha256": "069c6b589a5d672946252ac47eced86ee0bc5396eb43c0e1a8faf194015c8781",
-      "installed_sha256": "069c6b589a5d672946252ac47eced86ee0bc5396eb43c0e1a8faf194015c8781"
-    },
-    "scripts/pact/inspect_project.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/inspect_project.py",
-      "source_sha256": "557fd5221bc5b09248c06dfe220bfb1fef3a447bf53fb290d5aaf441f3888126",
-      "installed_sha256": "557fd5221bc5b09248c06dfe220bfb1fef3a447bf53fb290d5aaf441f3888126"
-    },
-    "scripts/pact/map.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/map.py",
-      "source_sha256": "916689a12ddb2148ec55850d1592c0c8ac6ee928c56af7bee2ad5b593ea17838",
-      "installed_sha256": "916689a12ddb2148ec55850d1592c0c8ac6ee928c56af7bee2ad5b593ea17838"
-    },
-    "scripts/pact/owner.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/owner.py",
-      "source_sha256": "206d6b90dd7c6cc2f755abf18c2e5a104ff1ea13783d399f73718d60a60ec94e",
-      "installed_sha256": "206d6b90dd7c6cc2f755abf18c2e5a104ff1ea13783d399f73718d60a60ec94e"
-    },
     "scripts/pact/pact.py": {
       "management": "framework",
-      "source_path": "scripts/pact/pact.py",
-      "source_sha256": "1160c34c53f8adb2b28e2ff2f3e5b185d605fcfde3dbe9f3744330241600b3e4",
-      "installed_sha256": "1160c34c53f8adb2b28e2ff2f3e5b185d605fcfde3dbe9f3744330241600b3e4"
-    },
-    "scripts/pact/parse_cache.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/parse_cache.py",
-      "source_sha256": "6e14d797d6134f6effedac10538927c22deea133ee50b330b73bff92cdf42b4f",
-      "installed_sha256": "6e14d797d6134f6effedac10538927c22deea133ee50b330b73bff92cdf42b4f"
-    },
-    "scripts/pact/readiness.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/readiness.py",
-      "source_sha256": "5b0e4ad791bdb604e67ce953ff0ad3a7dcc61832c781dbf27703f4b87c0f9b30",
-      "installed_sha256": "5b0e4ad791bdb604e67ce953ff0ad3a7dcc61832c781dbf27703f4b87c0f9b30"
-    },
-    "scripts/pact/report.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/report.py",
-      "source_sha256": "290488fd2fe3e16ce2d3951eb619c3754c9719648a77cd9bb92177670b74fe80",
-      "installed_sha256": "290488fd2fe3e16ce2d3951eb619c3754c9719648a77cd9bb92177670b74fe80"
-    },
-    "scripts/pact/repository_files.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/repository_files.py",
-      "source_sha256": "66b9089bf03f312a669de73c7740384da378501b5d1d755255f17cdc1d54dd7e",
-      "installed_sha256": "66b9089bf03f312a669de73c7740384da378501b5d1d755255f17cdc1d54dd7e"
-    },
-    "scripts/pact/risk.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/risk.py",
-      "source_sha256": "813a308f19f5705e570211c8677b832f02e74e5079abef74957567dbfd494d58",
-      "installed_sha256": "813a308f19f5705e570211c8677b832f02e74e5079abef74957567dbfd494d58"
-    },
-    "scripts/pact/run.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/run.py",
-      "source_sha256": "44539feb08486b7f516f6850512a5d80148974f8e3dcdcfc5943531d47ac1a69",
-      "installed_sha256": "44539feb08486b7f516f6850512a5d80148974f8e3dcdcfc5943531d47ac1a69"
-    },
-    "scripts/pact/schema_lint.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/schema_lint.py",
-      "source_sha256": "a54690c64c69c675ffc9d0c7261a477d58ded7ff10341378d9d1b7481d5acd28",
-      "installed_sha256": "a54690c64c69c675ffc9d0c7261a477d58ded7ff10341378d9d1b7481d5acd28"
-    },
-    "scripts/pact/schema_validate.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/schema_validate.py",
-      "source_sha256": "01e306e94e72e74203a4ebcea96e4065bff148e6ec01eeb794d73732ef67543a",
-      "installed_sha256": "01e306e94e72e74203a4ebcea96e4065bff148e6ec01eeb794d73732ef67543a"
-    },
-    "scripts/pact/security.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/security.py",
-      "source_sha256": "e160bb25b160793797e2856b2d65dee3613d27d903e886a21d730a26967311a9",
-      "installed_sha256": "e160bb25b160793797e2856b2d65dee3613d27d903e886a21d730a26967311a9"
-    },
-    "scripts/pact/status.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/status.py",
-      "source_sha256": "8a34a86efbe6af8205231ae63aa17c07d287556339b8ccc2f8db9b0f7a8220d9",
-      "installed_sha256": "8a34a86efbe6af8205231ae63aa17c07d287556339b8ccc2f8db9b0f7a8220d9"
-    },
-    "scripts/pact/task.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/task.py",
-      "source_sha256": "9b344b7730419f45024e5a0d6fa2bcf40e3fcb43fefff3a24ce83b502bae4861",
-      "installed_sha256": "9b344b7730419f45024e5a0d6fa2bcf40e3fcb43fefff3a24ce83b502bae4861"
-    },
-    "scripts/pact/task_contract.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/task_contract.py",
-      "source_sha256": "125c7f37345fb105185df3f687d634eef5166290714eff1168052dc0cc5a029a",
-      "installed_sha256": "125c7f37345fb105185df3f687d634eef5166290714eff1168052dc0cc5a029a"
-    },
-    "scripts/pact/upgrade.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/upgrade.py",
-      "source_sha256": "fc66fab1d754da770866cdae650c4f4791d8693f333a415fc4110259864a359e",
-      "installed_sha256": "fc66fab1d754da770866cdae650c4f4791d8693f333a415fc4110259864a359e"
-    },
-    "scripts/pact/version.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/version.py",
-      "source_sha256": "434360115554c84121d941b9a01af1b5fe75308a36dc5dac6dfe524d54e3bf83",
-      "installed_sha256": "434360115554c84121d941b9a01af1b5fe75308a36dc5dac6dfe524d54e3bf83"
-    },
-    "scripts/pact/workflow_lint.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/workflow_lint.py",
-      "source_sha256": "1f31de85cc1cb41451523e25b9c4bdb75fa961e70376bcf583ad0a3b3732913e",
-      "installed_sha256": "1f31de85cc1cb41451523e25b9c4bdb75fa961e70376bcf583ad0a3b3732913e"
-    },
-    "scripts/pact/workspace.py": {
-      "management": "framework",
-      "source_path": "scripts/pact/workspace.py",
-      "source_sha256": "e78ec1b70763e52754ef3f5a148d141a028f6e1588f46304edd5704cc80dff9e",
-      "installed_sha256": "e78ec1b70763e52754ef3f5a148d141a028f6e1588f46304edd5704cc80dff9e"
+      "source_path": ".pact/templates/compat/pact.py",
+      "source_sha256": "e168f2838d201bdf5de792fceb59204b7bb7cb3677432fb14642416caa31fdfd",
+      "installed_sha256": "e168f2838d201bdf5de792fceb59204b7bb7cb3677432fb14642416caa31fdfd"
     },
     ".pact/config.toml": {
       "management": "seed",
@@ -578,11 +356,11 @@
       "source_sha256": null,
       "installed_sha256": "6c2f6d0b6d538a190e4787e79de5ced099f7170f78bbb0b0897b990ffd18df0f"
     },
-    "scripts/pact/convergence_coverage.py": {
+    ".pact/pact.pyz": {
       "management": "framework",
-      "source_path": "scripts/pact/convergence_coverage.py",
-      "source_sha256": "131aac9e2e9d658d16e487a34edb25a74afd177de91c7f479580ac97425300ee",
-      "installed_sha256": "131aac9e2e9d658d16e487a34edb25a74afd177de91c7f479580ac97425300ee"
+      "source_path": ".pact/pact.pyz",
+      "source_sha256": "040dfcaae3b7057087c2d0dac568135114822bea4db2ac86d2b9f248ed48ef12",
+      "installed_sha256": "040dfcaae3b7057087c2d0dac568135114822bea4db2ac86d2b9f248ed48ef12"
     }
   }
 }

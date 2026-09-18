@@ -16,10 +16,17 @@ if sys.version_info < (3, 11):
     raise SystemExit(2)
 
 ROOT = pathlib.Path(__file__).resolve().parent
-RUNTIME = ROOT / "scripts" / "pact" / "pact.py"
+COMPACT_RUNTIME = ROOT / ".pact" / "pact.pyz"
+SOURCE_RUNTIME = ROOT / "scripts" / "pact" / "pact.py"
 
-if not RUNTIME.exists():
-    print(f"PACT runtime not found: {RUNTIME}", file=sys.stderr)
+RUNTIME = COMPACT_RUNTIME if COMPACT_RUNTIME.is_file() else SOURCE_RUNTIME
+
+if not RUNTIME.is_file():
+    print(
+        "PACT runtime not found: expected "
+        f"{COMPACT_RUNTIME} or {SOURCE_RUNTIME}",
+        file=sys.stderr,
+    )
     raise SystemExit(2)
 
 sys.argv[0] = str(RUNTIME)

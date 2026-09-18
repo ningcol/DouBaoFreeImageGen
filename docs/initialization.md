@@ -91,7 +91,7 @@ After each area has actually been inspected, mark it `reviewed` or explicitly `n
 Check state with:
 
 ```bash
-python scripts/pact/pact.py readiness
+python pact.py readiness
 ```
 
 Stages:
@@ -108,7 +108,7 @@ Only `pact-ready` means the project has an explicitly reviewed starting baseline
 For projects that want this as a gate:
 
 ```bash
-python scripts/pact/pact.py readiness --require-ready
+python pact.py readiness --require-ready
 ```
 
 ## Optional continuous CI
@@ -116,7 +116,7 @@ python scripts/pact/pact.py readiness --require-ready
 PACT can create a separate GitHub Actions workflow without modifying existing workflows:
 
 ```bash
-python scripts/pact/pact.py init \
+python pact.py init \
   --target ../existing-project \
   --apply \
   --github-actions

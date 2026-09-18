@@ -29,7 +29,7 @@ Architecture docs may describe current facts that can become stale. Where import
 Project-owned executable invariants are registered in `.pact/fitness.toml` and run with:
 
 ```bash
-python scripts/pact/pact.py fitness
+python pact.py fitness
 ```
 
 PACT defines the execution contract, not the architecture style.

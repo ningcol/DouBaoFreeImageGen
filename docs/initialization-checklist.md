@@ -123,7 +123,7 @@ Update `.pact/baseline.toml` only after each area was deliberately inspected:
 Then run:
 
 ```bash
-python scripts/pact/pact.py readiness
+python pact.py readiness
 ```
 
 A new agent should be able to answer, with reasonable confidence:
@@ -141,7 +141,7 @@ A new agent should be able to answer, with reasonable confidence:
 To create a separate workflow without touching existing workflows:
 
 ```bash
-python scripts/pact/pact.py init --target <repo> --apply --github-actions
+python pact.py init --target <repo> --apply --github-actions
 ```
 
 - [ ] confirm `.github/workflows/pact-project-check.yml` is appropriate for the repository;
