@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "pact-minimal-user-test/fresh-adoption"
+  pull_request:
+    branches:
+      - "pact-real-user-test/base-multi-client-round-robin"
   workflow_dispatch:
 
 permissions:
