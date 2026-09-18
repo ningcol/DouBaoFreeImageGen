@@ -66,7 +66,7 @@
       "required": [
         "attempts", "failed_attempts", "stale_workspace_blocks",
         "stale_contract_blocks", "acceptance_gap_blocks",
-        "ci_requirement_blocks", "final_complete"
+        "convergence_coverage_blocks", "ci_requirement_blocks", "final_complete"
       ],
       "additionalProperties": false,
       "properties": {
@@ -75,6 +75,7 @@
         "stale_workspace_blocks": { "type": "integer", "minimum": 0 },
         "stale_contract_blocks": { "type": "integer", "minimum": 0 },
         "acceptance_gap_blocks": { "type": "integer", "minimum": 0 },
+        "convergence_coverage_blocks": { "type": "integer", "minimum": 0 },
         "ci_requirement_blocks": { "type": "integer", "minimum": 0 },
         "final_complete": { "type": "boolean" }
       }

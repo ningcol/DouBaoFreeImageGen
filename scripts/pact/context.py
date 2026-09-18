@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import pathlib
 import subprocess
@@ -60,6 +61,17 @@ def run_discovery(
 
 def validate(envelope: dict) -> list[str]:
     return validate_instance(envelope, load_schema(SCHEMA))
+
+
+def artifact_sha256(relative: str) -> str | None:
+    path = (ROOT / relative).resolve()
+    try:
+        path.relative_to(ROOT.resolve())
+    except ValueError:
+        return None
+    if not path.is_file():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main() -> int:
@@ -202,6 +214,7 @@ def main() -> int:
                 "title": item["title"],
                 "score": item["score"],
                 "reasons": item.get("reasons", []),
+                "sha256": artifact_sha256(item["path"]),
             }
             for item in results
         ],

@@ -251,14 +251,14 @@
     ".pact/schema/context-envelope.schema.json": {
       "management": "framework",
       "source_path": ".pact/schema/context-envelope.schema.json",
-      "source_sha256": "3d80d1d99f09d0f3cd9aa46af8d41a1bcea1b48b00cee753cb2f449eecf7b7ff",
-      "installed_sha256": "3d80d1d99f09d0f3cd9aa46af8d41a1bcea1b48b00cee753cb2f449eecf7b7ff"
+      "source_sha256": "2397ff485c0030fcebd4fa1560ad62074df6b2187f236c07fad57bd4eb7c83b4",
+      "installed_sha256": "2397ff485c0030fcebd4fa1560ad62074df6b2187f236c07fad57bd4eb7c83b4"
     },
     ".pact/schema/convergence-report.schema.json": {
       "management": "framework",
       "source_path": ".pact/schema/convergence-report.schema.json",
-      "source_sha256": "c981e8b4e28e1a7315d1eb70af6fbcd90a2bf93670a31a51fc37f9e679d44575",
-      "installed_sha256": "c981e8b4e28e1a7315d1eb70af6fbcd90a2bf93670a31a51fc37f9e679d44575"
+      "source_sha256": "a84cfbf04411be3bad1a00ae9a02c71dc02606b278aea58ca0d536b7af76eb67",
+      "installed_sha256": "a84cfbf04411be3bad1a00ae9a02c71dc02606b278aea58ca0d536b7af76eb67"
     },
     ".pact/schema/evidence-receipt.schema.json": {
       "management": "framework",
@@ -317,14 +317,14 @@
     ".pact/schema/task-observation.schema.json": {
       "management": "framework",
       "source_path": ".pact/schema/task-observation.schema.json",
-      "source_sha256": "444054a955e93b5fb668342a737fc5875ac3176e3900341cf378ce584ffff8d5",
-      "installed_sha256": "444054a955e93b5fb668342a737fc5875ac3176e3900341cf378ce584ffff8d5"
+      "source_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7",
+      "installed_sha256": "e94b88d371dc579e9aa0ba3b88c2ba885da425a238fd1c0b5bb69ca2e540b6c7"
     },
     "scripts/pact/README.md": {
       "management": "framework",
       "source_path": "scripts/pact/README.md",
-      "source_sha256": "10af8342f684aa43853d8fd9ac3e02bbf8dfe84860ef19b78c3362bb65820d25",
-      "installed_sha256": "10af8342f684aa43853d8fd9ac3e02bbf8dfe84860ef19b78c3362bb65820d25"
+      "source_sha256": "3d22a68d4d89a21e64fba05570cf8a4a987904f885ed46f8296b0ba306f74e1c",
+      "installed_sha256": "3d22a68d4d89a21e64fba05570cf8a4a987904f885ed46f8296b0ba306f74e1c"
     },
     "scripts/pact/audit.py": {
       "management": "framework",
@@ -353,20 +353,20 @@
     "scripts/pact/complete.py": {
       "management": "framework",
       "source_path": "scripts/pact/complete.py",
-      "source_sha256": "8781152837f8e68a7f3cf6cffd9b8bfd6ea5c4fdda0829c4f44f6bcccfd6cba4",
-      "installed_sha256": "8781152837f8e68a7f3cf6cffd9b8bfd6ea5c4fdda0829c4f44f6bcccfd6cba4"
+      "source_sha256": "986cb31e18ffce914b730e1aa66a04ca09c231c686a86a6566ed21cd3fe4152d",
+      "installed_sha256": "986cb31e18ffce914b730e1aa66a04ca09c231c686a86a6566ed21cd3fe4152d"
     },
     "scripts/pact/context.py": {
       "management": "framework",
       "source_path": "scripts/pact/context.py",
-      "source_sha256": "6efaf1b0d455127d0faafd0ed99eca06d45473282a226833cf34ff0e7244c716",
-      "installed_sha256": "6efaf1b0d455127d0faafd0ed99eca06d45473282a226833cf34ff0e7244c716"
+      "source_sha256": "b683a8b8f26604c069cb5ca49fc98a4cc7a1fb87fb688ab5c4c0e13cd95ca90f",
+      "installed_sha256": "b683a8b8f26604c069cb5ca49fc98a4cc7a1fb87fb688ab5c4c0e13cd95ca90f"
     },
     "scripts/pact/converge.py": {
       "management": "framework",
       "source_path": "scripts/pact/converge.py",
-      "source_sha256": "65a29da565be56166876e64d69abc7548815c165645ee7f3c17d1dcb0b2566b0",
-      "installed_sha256": "65a29da565be56166876e64d69abc7548815c165645ee7f3c17d1dcb0b2566b0"
+      "source_sha256": "eb1755e65712335f7a81e7ac1c2db61691ed4309a979c273080d26bc000e56ab",
+      "installed_sha256": "eb1755e65712335f7a81e7ac1c2db61691ed4309a979c273080d26bc000e56ab"
     },
     "scripts/pact/discover.py": {
       "management": "framework",
@@ -389,8 +389,8 @@
     "scripts/pact/eval.py": {
       "management": "framework",
       "source_path": "scripts/pact/eval.py",
-      "source_sha256": "aa788076de11c560457b01991ee6ed47b81d022841d852321649f92ef35ec216",
-      "installed_sha256": "aa788076de11c560457b01991ee6ed47b81d022841d852321649f92ef35ec216"
+      "source_sha256": "afaca66c907c4302df8d2493de6434112112362d5f751453fde57f54cb03cb67",
+      "installed_sha256": "afaca66c907c4302df8d2493de6434112112362d5f751453fde57f54cb03cb67"
     },
     "scripts/pact/evidence.py": {
       "management": "framework",
@@ -467,8 +467,8 @@
     "scripts/pact/report.py": {
       "management": "framework",
       "source_path": "scripts/pact/report.py",
-      "source_sha256": "312afe25e6aacfda729676af14a099a6b1ed774d91376492e12673b7e5bf1360",
-      "installed_sha256": "312afe25e6aacfda729676af14a099a6b1ed774d91376492e12673b7e5bf1360"
+      "source_sha256": "290488fd2fe3e16ce2d3951eb619c3754c9719648a77cd9bb92177670b74fe80",
+      "installed_sha256": "290488fd2fe3e16ce2d3951eb619c3754c9719648a77cd9bb92177670b74fe80"
     },
     "scripts/pact/repository_files.py": {
       "management": "framework",
@@ -515,8 +515,8 @@
     "scripts/pact/task.py": {
       "management": "framework",
       "source_path": "scripts/pact/task.py",
-      "source_sha256": "42695b89cd7627c2a7d49bd402f7f1166a82857121f7f87c9843163073b6cf01",
-      "installed_sha256": "42695b89cd7627c2a7d49bd402f7f1166a82857121f7f87c9843163073b6cf01"
+      "source_sha256": "9b344b7730419f45024e5a0d6fa2bcf40e3fcb43fefff3a24ce83b502bae4861",
+      "installed_sha256": "9b344b7730419f45024e5a0d6fa2bcf40e3fcb43fefff3a24ce83b502bae4861"
     },
     "scripts/pact/task_contract.py": {
       "management": "framework",
@@ -577,6 +577,12 @@
       "source_path": null,
       "source_sha256": null,
       "installed_sha256": "6c2f6d0b6d538a190e4787e79de5ced099f7170f78bbb0b0897b990ffd18df0f"
+    },
+    "scripts/pact/convergence_coverage.py": {
+      "management": "framework",
+      "source_path": "scripts/pact/convergence_coverage.py",
+      "source_sha256": "131aac9e2e9d658d16e487a34edb25a74afd177de91c7f479580ac97425300ee",
+      "installed_sha256": "131aac9e2e9d658d16e487a34edb25a74afd177de91c7f479580ac97425300ee"
     }
   }
 }

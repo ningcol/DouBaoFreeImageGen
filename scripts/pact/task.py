@@ -48,6 +48,7 @@ def completion_blockers(errors: list[str]) -> list[str]:
         ("stale-workspace", ("stale pact-run receipt", "verified workspace")),
         ("stale-task-contract", ("task_contract_sha256",)),
         ("acceptance-gap", ("acceptance criterion", "Owner Report acceptance")),
+        ("convergence-coverage", ("convergence coverage:",)),
         ("ci-required", ("CI-backed Evidence",)),
     ]
     for code, needles in checks:
@@ -126,6 +127,8 @@ def prepare(args) -> int:
         print(context_result.stderr, end="", file=sys.stderr)
         return context_result.returncode
 
+    context_sha256 = hashlib.sha256(context_path.read_bytes()).hexdigest()
+
     impact_path = None
     impact_state = "deferred"
     impact_cmd = None
@@ -168,6 +171,7 @@ def prepare(args) -> int:
         "contract_sha256": contract_sha256,
         "acceptance_criteria_count": len(contract["acceptance_criteria"]),
         "context": context_path.relative_to(ROOT).as_posix(),
+        "context_sha256": context_sha256,
         "impact": (
             impact_path.relative_to(ROOT).as_posix()
             if impact_path is not None
@@ -187,8 +191,10 @@ def prepare(args) -> int:
         "next": (
             "Implement and verify every Task Contract acceptance criterion. "
             "Evidence claims that prove acceptance must list the relevant "
-            "criteria IDs. Create evidence.json, convergence.json, and "
-            "owner-report.json in the completion bundle, then run "
+            "criteria IDs. Convergence must bind the prepared context_sha256 "
+            "and explicitly cover every context.artifacts entry. Create "
+            "evidence.json, convergence.json, and owner-report.json in the "
+            "completion bundle, then run "
             f"'pact task finish {task_id}'."
         ),
     }
@@ -199,7 +205,7 @@ def prepare(args) -> int:
         print(f"PACT task prepared: {task_id}")
         print(f"- risk: {args.risk}")
         print(f"- contract: {manifest['contract']} ({manifest['acceptance_criteria_count']} acceptance criteria)")
-        print(f"- context: {manifest['context']}")
+        print(f"- context: {manifest['context']} (sha256={manifest['context_sha256'][:12]}...)")
         print(f"- impact: {impact_state}")
         if impact_state == "deferred":
             print(
@@ -247,6 +253,14 @@ def finish(args) -> int:
 
     if manifest is not None and manifest.get("contract"):
         command.extend(["--contract", str(ROOT / manifest["contract"])])
+
+    if (
+        manifest is not None
+        and manifest.get("context")
+        and manifest.get("context_sha256")
+    ):
+        command.extend(["--context", str(ROOT / manifest["context"])])
+        command.extend(["--context-sha256", manifest["context_sha256"]])
 
     completed = run(command)
     output = None

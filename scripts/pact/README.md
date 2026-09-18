@@ -216,3 +216,10 @@ python scripts/pact/pact.py eval --task <TASK-ID> --json
 The output includes acceptance coverage, Context artifact counts, run outcomes, completion-attempt blockers, Evidence state, and Convergence counts.
 
 Human interaction fields are intentionally listed in `human_required` rather than guessed.
+
+
+## Context-bound Convergence
+
+High-level prepared tasks fingerprint the generated Task Context. Before `task finish`, the Convergence Report must bind to that exact Context and provide one coverage disposition for every `context.artifacts` entry.
+
+This makes silent knowledge omission a completion error while keeping semantic judgment with the Agent.

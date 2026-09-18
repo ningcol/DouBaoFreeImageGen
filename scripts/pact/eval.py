@@ -292,6 +292,11 @@ def derive_task(task_id: str) -> dict:
                 "acceptance criterion",
                 "Owner Report acceptance",
             ),
+            "convergence_coverage_blocks": blocker_count(
+                attempts,
+                "convergence-coverage",
+                "convergence coverage:",
+            ),
             "ci_requirement_blocks": blocker_count(
                 attempts,
                 "ci-required",

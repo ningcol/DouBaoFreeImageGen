@@ -22,6 +22,7 @@ from report import (
     validate as validate_report_part,
 )
 from task_contract import acceptance_review, validate as validate_contract
+from convergence_coverage import review as review_convergence_coverage
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -51,6 +52,14 @@ def main() -> int:
     parser.add_argument(
         "--contract",
         help="optional Task Contract; when present every acceptance criterion must be verified and owner-visible",
+    )
+    parser.add_argument(
+        "--context",
+        help="optional prepared Task Context; when present Convergence must cover every selected knowledge artifact",
+    )
+    parser.add_argument(
+        "--context-sha256",
+        help="expected SHA256 of the prepared Task Context",
     )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -95,6 +104,18 @@ def main() -> int:
             print(f"PACT complete: cannot read Task Contract: {exc}", file=sys.stderr)
             return 2
 
+    context = None
+    context_path = None
+    if args.context:
+        context_path = pathlib.Path(args.context).expanduser()
+        if not context_path.is_absolute():
+            context_path = root / context_path
+        try:
+            context = load(context_path.resolve())
+        except Exception as exc:
+            print(f"PACT complete: cannot read Task Context: {exc}", file=sys.stderr)
+            return 2
+
     errors: list[str] = []
     errors.extend(f"evidence.{error}" for error in validate_evidence(evidence))
     errors.extend(validate_report_part(convergence, CONVERGENCE_SCHEMA, "convergence"))
@@ -123,6 +144,7 @@ def main() -> int:
         "current_workspace": None,
     }
     acceptance_stats = None
+    convergence_coverage_stats = None
     if not errors:
         provenance_errors, policy_gaps, provenance_stats = provenance_review(
             evidence, root
@@ -148,6 +170,17 @@ def main() -> int:
             )
             errors.extend(
                 f"acceptance: {error}" for error in acceptance_errors
+            )
+        if context is not None and context_path is not None:
+            coverage_errors, convergence_coverage_stats = review_convergence_coverage(
+                context,
+                convergence,
+                root=root,
+                context_path=context_path.resolve(),
+                expected_context_sha256=args.context_sha256,
+            )
+            errors.extend(
+                f"convergence coverage: {error}" for error in coverage_errors
             )
 
     risk = evidence.get("risk_level")
@@ -215,6 +248,13 @@ def main() -> int:
         "acceptance": acceptance_stats,
         "contract": str(contract_path.resolve()) if contract_path else None,
         "contract_sha256": contract_sha256,
+        "context": str(context_path.resolve()) if context_path else None,
+        "context_sha256": (
+            convergence_coverage_stats.get("context_sha256")
+            if convergence_coverage_stats is not None
+            else None
+        ),
+        "convergence_coverage": convergence_coverage_stats,
         "bundle": str(bundle),
     }
 
@@ -238,6 +278,12 @@ def main() -> int:
                 "- acceptance: "
                 f"{acceptance_stats['owner_report_covered']}/"
                 f"{acceptance_stats['total']} owner-visible and verified"
+            )
+        if convergence_coverage_stats is not None:
+            print(
+                "- convergence coverage: "
+                f"{convergence_coverage_stats['covered_artifacts']}/"
+                f"{convergence_coverage_stats['required_artifacts']} context artifacts reviewed"
             )
         if policy_gaps:
             print("Policy gaps:")

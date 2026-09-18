@@ -30,11 +30,16 @@ def validate(data: dict, schema_path: pathlib.Path, label: str) -> list[str]:
 
 def convergence_outcome(report: dict) -> str:
     classes = [f.get("classification") for f in report.get("findings", [])]
-    if "owner-decision" in classes:
+    dispositions = {
+        item.get("disposition")
+        for item in report.get("coverage", [])
+        if isinstance(item, dict)
+    }
+    if "owner-decision" in classes or "owner-decision" in dispositions:
         return "needs-owner"
     if any(c in {"missing", "partial", "contradicts"} for c in classes):
         return "needs-reconciliation"
-    if "stale" in classes:
+    if "stale" in classes or "stale" in dispositions:
         return "nonblocking-drift"
     return "aligned"
 

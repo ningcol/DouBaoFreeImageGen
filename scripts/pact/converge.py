@@ -9,6 +9,7 @@ import pathlib
 import sys
 
 from schema_validate import load_schema, validate_instance
+from convergence_coverage import review as review_coverage
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SCHEMA = ROOT / ".pact" / "schema" / "convergence-report.schema.json"
@@ -26,11 +27,22 @@ def validate(report: dict) -> list[str]:
 
 def outcome(report: dict) -> str:
     findings = report.get("findings", [])
-    if any(f.get("classification") == "owner-decision" for f in findings):
+    dispositions = {
+        item.get("disposition")
+        for item in report.get("coverage", [])
+        if isinstance(item, dict)
+    }
+    if (
+        any(f.get("classification") == "owner-decision" for f in findings)
+        or "owner-decision" in dispositions
+    ):
         return "needs-owner"
     if any(f.get("classification") in BLOCKING_CLASSES for f in findings):
         return "needs-reconciliation"
-    if any(f.get("classification") == "stale" for f in findings):
+    if (
+        any(f.get("classification") == "stale" for f in findings)
+        or "stale" in dispositions
+    ):
         return "converged-with-nonblocking-drift"
     return "converged"
 
@@ -62,6 +74,8 @@ def render(report: dict) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate a PACT convergence report")
     parser.add_argument("report")
+    parser.add_argument("--context", help="prepared Task Context to validate coverage against")
+    parser.add_argument("--context-sha256", help="expected SHA256 of the prepared Task Context")
     parser.add_argument("--json", action="store_true", help="emit machine-readable outcome")
     args = parser.parse_args()
 
@@ -76,6 +90,24 @@ def main() -> int:
         return 2
 
     errors = validate(report)
+    coverage_stats = None
+    if not errors and args.context:
+        context_path = pathlib.Path(args.context)
+        if not context_path.is_absolute():
+            context_path = ROOT / context_path
+        try:
+            context = load_json(context_path)
+            coverage_errors, coverage_stats = review_coverage(
+                context,
+                report,
+                root=ROOT,
+                context_path=context_path.resolve(),
+                expected_context_sha256=args.context_sha256,
+            )
+            errors.extend(f"coverage: {error}" for error in coverage_errors)
+        except Exception as exc:
+            errors.append(f"cannot review Task Context coverage: {exc}")
+
     if errors:
         print("PACT convergence: invalid report", file=sys.stderr)
         for error in errors:
@@ -86,6 +118,7 @@ def main() -> int:
         "outcome": outcome(report),
         "change": report["change"],
         "finding_count": len(report.get("findings", [])),
+        "coverage": coverage_stats,
     }
 
     if args.json:
