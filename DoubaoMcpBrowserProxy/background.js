@@ -186,6 +186,8 @@ chrome.debugger.onEvent.addListener(async (source, method, params) => {
       }
       streamRequests.delete(requestKey);
     }
+  } else if (method === "Network.loadingFailed") {
+    streamRequests.delete(streamRequestKey(source, params.requestId));
   }
 });
 
@@ -269,6 +271,7 @@ function dispatchTaskToTab(rawMessage) {
   }
 
   busyTabs.set(tabId, task.requestId);
+  sendClientState();
   console.log(`[Dispatch] Sending request ${task.requestId || 'legacy'} to tab ${tabId}`);
 
   chrome.tabs.sendMessage(
@@ -336,8 +339,9 @@ function connectWebSocket() {
         ws = null;
         // Keep busyTabs intact across reconnects. The page may still be
         // generating an old request; advertising it as free would allow
-        // duplicate work on the same tab.
-        if (!event.wasClean) {
+        // duplicate work on the same tab. There is no intentional manual
+        // disconnect mode, so reconnect after clean server restarts too.
+        if (doubaoTabIds.size > 0) {
           scheduleReconnect();
         }
       };
