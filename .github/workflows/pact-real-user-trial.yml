@@ -82,6 +82,7 @@ jobs:
         run: |
           python pact.py impact \
             --files \
+              README.md \
               McpServer/server.py \
               McpServer/test_server_dispatch.py \
               DoubaoMcpBrowserProxy/background.js \
@@ -192,7 +193,7 @@ jobs:
               "version": 1,
               "task_id": task_id,
               "change": manifest["task"],
-              "owner_summary": "The implementation now models multiple browser clients and multiple ready tabs as independent scheduling capacity while preserving the capacity-one path.",
+              "owner_summary": "Code and README now describe multiple browser clients and multiple ready tabs as independent scheduling capacity while preserving the capacity-one path.",
               "evidence": [claim["id"] for claim in claims],
               "findings": [],
           }
@@ -207,7 +208,7 @@ jobs:
               "version": 1,
               "task_id": task_id,
               "status": "completed",
-              "summary": "MCP drawing work can now be distributed across multiple connected clients and multiple Doubao tabs without using one global task lock.",
+              "summary": "MCP drawing work can now be distributed across multiple connected clients and multiple Doubao tabs without using one global task lock; README usage/limitations were updated to match.",
               "before": "The server stored one WebSocket, one global image buffer, one global task flag, and the extension stored one Doubao tab ID.",
               "after": "The server uses a round-robin client pool with per-client tab capacity and request IDs; the extension maintains a tab pool, tracks busy tabs, and returns results to the matching request.",
               "verification": [
@@ -227,7 +228,7 @@ jobs:
               ],
               "consistency": {
                   "status": "aligned",
-                  "summary": "No confirmed project Product Rule or Decision was found to contradict the change; PACT explicitly keeps brownfield truth readiness pending.",
+                  "summary": "README descriptive behavior was updated to match concurrent dispatch; no confirmed Product Rule or Decision was found to contradict the change, while brownfield truth readiness remains pending.",
               },
               "owner_decisions": [],
               "technical_details": [
