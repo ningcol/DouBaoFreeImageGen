@@ -1,0 +1,102 @@
+name: PACT Minimal Fresh Adoption Trial
+
+on:
+  push:
+    branches:
+      - "pact-minimal-user-test/fresh-adoption"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fresh-adoption:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: "pact-minimal-user-test/fresh-adoption"
+          fetch-depth: 0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Fresh install current PACT PR
+        shell: bash
+        run: |
+          set -euo pipefail
+          PACT_REF="240794e4284c2f0e67672c5d43d671937efcb320"
+          curl -fsSLo /tmp/pact-bootstrap.py \
+            "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
+
+          python /tmp/pact-bootstrap.py init \
+            --target . \
+            --repo ningcol/PACT \
+            --ref "${PACT_REF}" \
+            --apply
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          manifest_path = pathlib.Path(".pact/install.json")
+          data = json.loads(manifest_path.read_text(encoding="utf-8"))
+          files = data.get("files", {})
+          framework = [p for p, r in files.items() if r.get("management") == "framework"]
+          seed = [p for p, r in files.items() if r.get("management") == "seed"]
+          print("PACT_MINIMAL_INSTALL",
+                f"profile={data.get('install_profile')} managed={len(files)} ",
+                f"framework={len(framework)} seed={len(seed)} physical={len(files) + 1}")
+          print("PACT_MANAGED_PATHS")
+          for path in sorted(files):
+              print(path)
+
+          assert data.get("install_profile") == "minimal", data
+          assert len(files) <= 8, len(files)
+          assert not pathlib.Path("scripts/pact").exists()
+          for relative in [
+              "docs/governance",
+              "docs/product",
+              "docs/architecture",
+              "docs/changes",
+              "docs/drift",
+              ".agents/decisions",
+              ".agents/skills",
+          ]:
+              assert not pathlib.Path(relative).exists(), relative
+          PY
+
+      - name: Validate minimal runtime end to end
+        run: |
+          set -euo pipefail
+          python pact.py doctor --strict
+          python pact.py status --json
+          python pact.py schema-lint
+          python pact.py task prepare \
+            "MCP 支持多个豆包客户端轮询分发图片生成任务，同一个客户端允许多个 Tab 并发处理" \
+            --success "能够定位并准备多客户端/多 Tab 调度任务所需上下文" \
+            --accept "现有单客户端单 Tab 行为仍被视为兼容约束" \
+            --constraint "不把当前代码行为自动提升为 Product Truth" \
+            --risk medium \
+            --query "MCP 多客户端 轮询 分发 websocket" \
+            --query "browser tabs concurrent task dispatch" \
+            --code \
+            --task-id TASK-MINIMAL-ADOPTION \
+            --json
+
+          echo '----- TASK CONTEXT -----'
+          cat .pact/tasks/TASK-MINIMAL-ADOPTION/context.json
+
+      - name: Assert no empty scaffold appeared during task preparation
+        run: |
+          set -euo pipefail
+          test ! -d docs/governance
+          test ! -d docs/product
+          test ! -d docs/architecture
+          test ! -d docs/changes
+          test ! -d docs/drift
+          test ! -d .agents/decisions
+          test ! -d .agents/skills
+          test ! -d scripts/pact
