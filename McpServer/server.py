@@ -29,10 +29,14 @@ class ClientState:
     client_id: str
     ready_tabs: int = 1
     in_flight: int = 0
+    reported_available_tabs: Optional[int] = None
 
     @property
     def available_slots(self) -> int:
-        return max(self.ready_tabs - self.in_flight, 0)
+        locally_available = max(self.ready_tabs - self.in_flight, 0)
+        if self.reported_available_tabs is None:
+            return locally_available
+        return min(locally_available, max(self.reported_available_tabs, 0))
 
 
 @dataclass
@@ -116,17 +120,28 @@ class AppContext:
                 len(disconnected),
             )
 
-    async def update_client_capacity(self, websocket, ready_tabs: int) -> None:
+    async def update_client_capacity(
+        self,
+        websocket,
+        ready_tabs: int,
+        available_tabs: Optional[int] = None,
+    ) -> None:
         async with self.condition:
             client = self._client_for_websocket(websocket)
             if client is None:
                 return
             client.ready_tabs = max(int(ready_tabs), 0)
+            client.reported_available_tabs = (
+                max(int(available_tabs), 0)
+                if available_tabs is not None
+                else None
+            )
             self.condition.notify_all()
             logger.info(
-                "%s reports %s ready tab(s), %s in flight",
+                "%s reports %s ready tab(s), %s browser-available, %s in flight",
                 client.client_id,
                 client.ready_tabs,
+                client.reported_available_tabs,
                 client.in_flight,
             )
 
@@ -333,7 +348,15 @@ async def websocket_handler(websocket, app_context: AppContext):
                 message_type = data.get("type")
                 if message_type == "clientState":
                     ready_tabs = data.get("readyTabs", data.get("ready_tabs", 0))
-                    await app_context.update_client_capacity(websocket, ready_tabs)
+                    available_tabs = data.get(
+                        "availableTabs",
+                        data.get("available_tabs"),
+                    )
+                    await app_context.update_client_capacity(
+                        websocket,
+                        ready_tabs,
+                        available_tabs,
+                    )
                     continue
 
                 if message_type == "scriptReady":
