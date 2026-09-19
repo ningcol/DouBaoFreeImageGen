@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="4400695d2595d546036ca7705706a55415971f7b"
+          PACT_REF="677fe1a89249ca67ac3f18ed971577ba034dba57"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -49,14 +49,14 @@ jobs:
           files = data.get("files", {})
           framework = [p for p, r in files.items() if r.get("management") == "framework"]
           seed = [p for p, r in files.items() if r.get("management") == "seed"]
-          print("PACT_MINIMAL_INSTALL",
-                f"profile={data.get('install_profile')} managed={len(files)} ",
-                f"framework={len(framework)} seed={len(seed)} physical={len(files) + 1}")
+          print("PACT_INSTALL",
+                f"managed={len(files)} framework={len(framework)} ",
+                f"seed={len(seed)} physical={len(files) + 1}")
           print("PACT_MANAGED_PATHS")
           for path in sorted(files):
               print(path)
 
-          assert data.get("install_profile") == "minimal", data
+          assert "install_profile" not in data, data
           assert len(files) <= 8, len(files)
           assert not pathlib.Path("scripts/pact").exists()
           for relative in [
