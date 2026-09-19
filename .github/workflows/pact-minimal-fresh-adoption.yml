@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="0c3723df5bceb52fbfb45f80f46b533f0bcbdcff"
+          PACT_REF="f7f985e96b6474f19ebc59da28475343dbf30de3"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -103,6 +103,22 @@ jobs:
 
           echo '----- TASK CONTEXT -----'
           cat .pact/tasks/TASK-MINIMAL-ADOPTION/context.json
+          python - <<'PY'
+          import json
+          import pathlib
+          data = json.loads(
+              pathlib.Path(".pact/tasks/TASK-MINIMAL-ADOPTION/context.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          budget = data["risk_policy"]["code_limit"]
+          code = data["code_artifacts"]
+          assert len(code) <= budget, (len(code), budget)
+          paths = {item["path"] for item in code}
+          assert "McpServer/server.py" in paths, paths
+          assert "DoubaoMcpBrowserProxy/background.js" in paths, paths
+          print("PACT_CONTEXT_BUDGET", f"budget={budget} output={len(code)}")
+          PY
 
       - name: Complete a real medium-risk PACT task
         run: |
