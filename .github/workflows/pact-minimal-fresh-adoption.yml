@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="677fe1a89249ca67ac3f18ed971577ba034dba57"
+          PACT_REF="66a916812b5b328ec3a4d15c33c289a640003770"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -91,6 +91,115 @@ jobs:
 
           echo '----- TASK CONTEXT -----'
           cat .pact/tasks/TASK-MINIMAL-ADOPTION/context.json
+
+      - name: Complete a real medium-risk PACT task
+        run: |
+          set -euo pipefail
+          TASK_ID="TASK-MINIMAL-ADOPTION"
+          mkdir -p ".pact/runs/$TASK_ID"
+
+          python pact.py run \
+            --task-id "$TASK_ID" \
+            --output ".pact/runs/$TASK_ID/context-check.json" \
+            -- \
+            python -c 'import json, pathlib; p=pathlib.Path(".pact/tasks/TASK-MINIMAL-ADOPTION/context.json"); c=json.loads(p.read_text()); paths={x["path"] for x in c["code_artifacts"]}; assert "McpServer/server.py" in paths, paths; assert c["known_unknowns"], c'
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          task_id = "TASK-MINIMAL-ADOPTION"
+          task_dir = pathlib.Path(".pact/tasks") / task_id
+          bundle = pathlib.Path(".pact/completions") / task_id
+          bundle.mkdir(parents=True, exist_ok=True)
+
+          manifest = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+          contract = json.loads((task_dir / "contract.json").read_text(encoding="utf-8"))
+          context = json.loads((task_dir / "context.json").read_text(encoding="utf-8"))
+
+          criteria = [item["id"] for item in contract["acceptance_criteria"]]
+          evidence_id = "EV-CONTEXT-VERIFIED"
+
+          evidence = {
+              "version": 1,
+              "task_id": task_id,
+              "task": manifest["task"],
+              "risk_level": "medium",
+              "task_contract_sha256": manifest["contract_sha256"],
+              "claims": [{
+                  "id": evidence_id,
+                  "claim": "Prepared context was machine-checked against the real historical repository.",
+                  "required": True,
+                  "status": "pass",
+                  "criteria": criteria,
+                  "evidence": [{
+                      "kind": "test",
+                      "provenance": "pact-run",
+                      "ref": f".pact/runs/{task_id}/context-check.json",
+                  }],
+              }],
+              "limitations": [],
+          }
+
+          coverage = [{
+              "path": item["path"],
+              "disposition": "aligned",
+              "rationale": "This validation-only task did not change project knowledge; the prepared artifact remains aligned.",
+          } for item in context.get("artifacts", [])]
+
+          convergence = {
+              "version": 1,
+              "task_id": task_id,
+              "change": "Validate PACT context preparation and trust boundaries on the historical project.",
+              "owner_summary": "The prepared context remained aligned and the real code location was verified by a workspace-bound run.",
+              "evidence": [evidence_id],
+              "findings": [],
+              "context_sha256": manifest["context_sha256"],
+              "coverage": coverage,
+          }
+
+          owner = {
+              "version": 1,
+              "task_id": task_id,
+              "status": "completed",
+              "summary": "PACT completed the historical context-validation task.",
+              "before": "The historical project had no PACT task context for this request.",
+              "after": "PACT prepared context and machine-verified the expected MCP server implementation location.",
+              "verification": [{
+                  "claim": "The prepared context contains the expected MCP server implementation.",
+                  "evidence_ids": [evidence_id],
+              }],
+              "acceptance": [{
+                  "criterion_id": item["id"],
+                  "summary": item["text"],
+                  "evidence_ids": [evidence_id],
+              } for item in contract["acceptance_criteria"]],
+              "consistency": {
+                  "status": "aligned",
+                  "summary": "No product source or durable project knowledge was changed by this validation-only task.",
+              },
+              "owner_decisions": [],
+          }
+
+          for name, data in [
+              ("evidence.json", evidence),
+              ("convergence.json", convergence),
+              ("owner-report.json", owner),
+          ]:
+              (bundle / name).write_text(
+                  json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+          PY
+
+          python pact.py task finish "$TASK_ID" --json | tee /tmp/pact-task-finish.json
+          python - <<'PY'
+          import json
+          data = json.load(open("/tmp/pact-task-finish.json"))
+          assert data["complete"] is True, data
+          assert data["workspace_bound_claims"] >= 1, data
+          print("PACT real task completion passed with workspace-bound Evidence.")
+          PY
 
       - name: Assert no empty scaffold appeared during task preparation
         run: |
