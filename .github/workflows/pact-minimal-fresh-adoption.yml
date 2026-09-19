@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="c80832943a1ece9cf3d6c0eccfa7d7ff589588e2"
+          PACT_REF="28302ac15182afba8c1f82c3dd91a510f1cc952d"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
