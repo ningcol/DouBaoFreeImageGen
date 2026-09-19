@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="74ec90751e40839af437fd656e3b70b260ddf8be"
+          PACT_REF="54535095d99b74e389d8fa1fcfdfcff3423c22a0"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -58,6 +58,10 @@ jobs:
 
           assert "install_profile" not in data, data
           assert len(files) <= 8, len(files)
+          assert ".pact/.gitignore" in files, files
+          assert pathlib.Path(".pact/.gitignore").is_file()
+          rules = set(pathlib.Path(".pact/.gitignore").read_text().splitlines())
+          assert {"cache/", "tasks/", "runs/", "completions/", "tmp/"} <= rules, rules
           assert not pathlib.Path("scripts/pact").exists()
           for relative in [
               "docs/governance",
@@ -220,3 +224,14 @@ jobs:
           test ! -d .agents/decisions
           test ! -d .agents/skills
           test ! -d scripts/pact
+
+          git check-ignore -q .pact/tasks/TASK-MINIMAL-ADOPTION/task.json
+          git check-ignore -q .pact/runs/TASK-MINIMAL-ADOPTION/context-check.json
+          git check-ignore -q .pact/completions/TASK-MINIMAL-ADOPTION/evidence.json
+
+          echo "----- GIT STATUS -----"
+          git status --short
+          if git status --short | grep -E '^\?\? \.pact/(tasks|runs|completions|cache|tmp)/'; then
+            echo "PACT generated state leaked into git status"
+            exit 1
+          fi
