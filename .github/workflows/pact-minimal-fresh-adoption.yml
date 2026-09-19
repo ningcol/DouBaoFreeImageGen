@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="66a916812b5b328ec3a4d15c33c289a640003770"
+          PACT_REF="74ec90751e40839af437fd656e3b70b260ddf8be"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -75,7 +75,15 @@ jobs:
         run: |
           set -euo pipefail
           python pact.py doctor --strict
-          python pact.py status --json
+          python pact.py status --strict --json | tee /tmp/pact-status.json
+          python - <<'PY'
+          import json
+          data = json.load(open("/tmp/pact-status.json"))
+          assert data["overall"] == "pass", data
+          assert data["readiness"]["stage"] == "foundation-valid", data
+          assert "baseline-review-pending" in data["warnings"], data
+          print("PACT status is healthy with baseline readiness advisory.")
+          PY
           python pact.py schema-lint
           python pact.py task prepare \
             "MCP 支持多个豆包客户端轮询分发图片生成任务，同一个客户端允许多个 Tab 并发处理" \
