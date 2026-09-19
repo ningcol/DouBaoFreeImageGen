@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="554efda70f4cd4b520382562b1a5a999652782e2"
+          PACT_REF="0a97bc3b3ddf438e60a66ab6016f79673f3c560d"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -133,6 +133,27 @@ jobs:
               f"dropped={data['context_budget']['dropped_candidates']} "
               f"overage={overage}",
           )
+          PY
+
+      - name: Inspect remembered multi-client behavior
+        run: |
+          set -euo pipefail
+          python pact.py inspect             "多个豆包客户端如何分发图片生成任务"             --query "multi client round robin websocket"             --query "background browser tabs dispatch"             --code-limit 6             --json > /tmp/pact-inspect.json
+
+          python - <<'PY'
+          import json
+          data = json.load(open("/tmp/pact-inspect.json", encoding="utf-8"))
+          assert data["queries"] == [
+              "多个豆包客户端如何分发图片生成任务",
+              "multi client round robin websocket",
+              "background browser tabs dispatch",
+          ], data["queries"]
+          code = data["discovery"]["code_results"]
+          assert len(code) <= 6, len(code)
+          paths = {item["path"] for item in code}
+          assert "McpServer/server.py" in paths, paths
+          assert "DoubaoMcpBrowserProxy/background.js" in paths, paths
+          print("PACT_INSPECT_CODE", len(code), sorted(paths))
           PY
 
       - name: Complete a real medium-risk PACT task
