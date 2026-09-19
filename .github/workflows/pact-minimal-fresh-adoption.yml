@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="f7f985e96b6474f19ebc59da28475343dbf30de3"
+          PACT_REF="554efda70f4cd4b520382562b1a5a999652782e2"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -117,7 +117,22 @@ jobs:
           paths = {item["path"] for item in code}
           assert "McpServer/server.py" in paths, paths
           assert "DoubaoMcpBrowserProxy/background.js" in paths, paths
+          token_budget = data["context_budget"]["limit_tokens"]
+          selected_tokens = data["context_budget"]["selected_estimated_tokens"]
+          overage = data["context_budget"]["authority_overage_tokens"]
+          assert selected_tokens <= token_budget + overage, (
+              selected_tokens,
+              token_budget,
+              overage,
+          )
           print("PACT_CONTEXT_BUDGET", f"budget={budget} output={len(code)}")
+          print(
+              "PACT_TOKEN_BUDGET",
+              f"limit={token_budget} selected={selected_tokens} "
+              f"candidates={data['context_budget']['candidate_estimated_tokens']} "
+              f"dropped={data['context_budget']['dropped_candidates']} "
+              f"overage={overage}",
+          )
           PY
 
       - name: Complete a real medium-risk PACT task
