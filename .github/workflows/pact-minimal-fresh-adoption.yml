@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PACT_REF="0a97bc3b3ddf438e60a66ab6016f79673f3c560d"
+          PACT_REF="1cddfca5a17c42ecb2d5abb8e5f4a222e0218937"
           curl -fsSLo /tmp/pact-bootstrap.py \
             "https://raw.githubusercontent.com/ningcol/PACT/${PACT_REF}/bootstrap.py"
 
@@ -162,6 +162,8 @@ jobs:
           TASK_ID="TASK-MINIMAL-ADOPTION"
           mkdir -p ".pact/runs/$TASK_ID"
 
+          printf '\n# PACT task-change coverage validation\n' >> McpServer/server.py
+
           python pact.py run \
             --task-id "$TASK_ID" \
             --output ".pact/runs/$TASK_ID/context-check.json" \
@@ -240,7 +242,7 @@ jobs:
               } for item in contract["acceptance_criteria"]],
               "consistency": {
                   "status": "aligned",
-                  "summary": "No product source or durable project knowledge was changed by this validation-only task.",
+                  "summary": "The ephemeral MCP server comment is the only product-source change and is reviewed below.",
               },
               "owner_decisions": [],
           }
@@ -256,13 +258,53 @@ jobs:
               )
           PY
 
+          set +e
+          python pact.py task finish "$TASK_ID" --json > /tmp/pact-task-blocked.json
+          blocked_rc=$?
+          set -e
+          test "$blocked_rc" -eq 1
+
+          python - <<'PY'
+          import json
+          import pathlib
+
+          blocked = json.load(open("/tmp/pact-task-blocked.json", encoding="utf-8"))
+          assert blocked["complete"] is False, blocked
+          assert blocked["task_change"]["changed_files"] == ["McpServer/server.py"], blocked
+          assert any(
+              "Task changed file missing from Convergence change coverage" in error
+              for error in blocked["errors"]
+          ), blocked["errors"]
+
+          impact_path = pathlib.Path(blocked["final_impact"])
+          assert impact_path.is_file(), impact_path
+          impact = json.loads(impact_path.read_text(encoding="utf-8"))
+          assert impact["changed_files"] == ["McpServer/server.py"], impact
+
+          convergence_path = pathlib.Path(
+              ".pact/completions/TASK-MINIMAL-ADOPTION/convergence.json"
+          )
+          convergence = json.loads(convergence_path.read_text(encoding="utf-8"))
+          convergence["change_coverage"] = [{
+              "path": "McpServer/server.py",
+              "rationale": "Ephemeral validation comment intentionally exercises task changed-file attribution.",
+          }]
+          convergence_path.write_text(
+              json.dumps(convergence, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print("PACT_CHANGE_BLOCKED", blocked["task_change"]["changed_files"])
+          PY
+
           python pact.py task finish "$TASK_ID" --json | tee /tmp/pact-task-finish.json
           python - <<'PY'
           import json
           data = json.load(open("/tmp/pact-task-finish.json"))
           assert data["complete"] is True, data
           assert data["workspace_bound_claims"] >= 1, data
-          print("PACT real task completion passed with workspace-bound Evidence.")
+          assert data["task_change"]["changed_files"] == ["McpServer/server.py"], data
+          assert data["change_coverage"]["covered_changed_files"] == 1, data
+          print("PACT real task completion passed with changed-file coverage.")
           PY
 
       - name: Assert no empty scaffold appeared during task preparation
