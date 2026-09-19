@@ -232,7 +232,7 @@ jobs:
               "before": "The historical project had no PACT task context for this request.",
               "after": "PACT prepared context and machine-verified the expected MCP server implementation location.",
               "verification": [{
-                  "claim": "The prepared context contains the expected MCP server implementation.",
+                  "claim": "Prepared context was machine-checked against the real historical repository.",
                   "evidence_ids": [evidence_id],
               }],
               "acceptance": [{
